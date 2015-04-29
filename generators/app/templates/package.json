@@ -1,0 +1,22 @@
+{
+  "name": "<%= name %>",
+  "private": true,
+  "devDependencies": {
+    "browserify": "^9.0.8",
+    "clean-css": "^3.2.1",
+    "sass-composer": "^0.2.1",
+    "uglify-js": "^2.4.20",
+    "watchify": "^3.1.1"
+  },
+  "scripts": {
+    "clean": "rm -rf ./build && mkdir ./build",
+    "build-js": "browserify ./index.js -o ./build/build.js",
+    "minify-js": "uglifyjs ./build/build.js -o ./build/build.js",
+    "watch-js": "watchify ./index.js -do ./build/build.js",
+    "build-css": "sass-composer ./index.scss -o ./build/build.css && autoprefixer ./build/build.css",
+    "minify-css": "cleancss ./build/build.css -o ./build/build.css",
+    "watch-css": "",
+    "build": "npm run clean && npm run build-js && npm run build-css",
+    "build-prod": "npm run build && npm run minify-js && npm run minify-css"
+  }
+}

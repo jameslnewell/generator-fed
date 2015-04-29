@@ -1,0 +1,51 @@
+var generators = require('yeoman-generator');
+
+module.exports = generators.Base.extend({
+
+  constructor: function () {
+    generators.Base.apply(this, arguments);
+  },
+
+  writing: function() {
+
+    var data = {
+      name: 'my-app'
+    };
+
+    this.fs.copyTpl(
+      this.templatePath('.gitignore'),
+      this.destinationPath('.gitignore'),
+      data
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('package.json'),
+      this.destinationPath('package.json'),
+      data
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('README.md'),
+      this.destinationPath('README.md'),
+      data
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('index.js'),
+      this.destinationPath('index.js'),
+      data
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('index.scss'),
+      this.destinationPath('index.scss'),
+      data
+    );
+
+  },
+
+  install: function() {
+    this.npmInstall([], {registry: 'http://npm:8080'});
+  }
+
+});
