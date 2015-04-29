@@ -2,6 +2,7 @@
   "name": "<%= name %>",
   "private": true,
   "devDependencies": {
+    "autoprefixer": "^5.1.1",
     "browserify": "^9.0.8",
     "clean-css": "^3.2.1",
     "sass-composer": "^0.2.1",
