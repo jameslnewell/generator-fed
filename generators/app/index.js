@@ -42,6 +42,33 @@ module.exports = generators.Base.extend({
       data
     );
 
+    this.fs.copyTpl(
+      this.templatePath('test/index.js'),
+      this.destinationPath('test/index.js'),
+      data
+    );
+
+    var self = this;
+    var done = this.async();
+    this.prompt({
+      type:     'confirm',
+      name:     'git',
+      message:  'Initialise Git?'
+    }, function(value) {
+
+      if (!value.git) {
+        return done();
+      }
+
+      //initialise Git
+      self.spawnCommand('git', ['init']);
+
+      //setup Git pre-commit hook
+
+
+      done();
+    });
+
   },
 
   install: function() {
