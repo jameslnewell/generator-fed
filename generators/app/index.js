@@ -70,7 +70,11 @@ module.exports = generators.Base.extend({
       self.spawnCommand('git', ['init']);
 
       //setup Git pre-commit hook
-
+      this.fs.copyTpl(
+        this.templatePath('pre-commit'),
+        this.destinationPath('.git/hook/pre-commit'),
+        data
+      );
 
       done();
     });

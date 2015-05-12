@@ -9,12 +9,14 @@ var sequence    = require('run-sequence');
 
 var fs          = require('fs');
 var path        = require('path');
+var mkdirp      = require('mkdirp');
 var rimraf      = require('rimraf');
-var exec        = require('child_process').exec
+var exec        = require('child_process').exec;
 
 var buffer      = require('vinyl-buffer');
 var source      = require('vinyl-source-stream');
 
+var jshint      = require('gulp-jshint');
 var browserify  = require('browserify');
 var watchify    = require('watchify');
 var mochify     = require('mochify');
@@ -29,6 +31,17 @@ var debug       = minimist(process.argv.slice(2)).debug;
 
 var SRC_DIR     = __dirname;
 var BUILD_DIR   = __dirname+'/build';
+
+/******************************************************************************************
+ * Assets
+ ******************************************************************************************/
+
+gulp.task('assets.clean', function(done) {
+  rimraf(BUILD_DIR, function(err) {
+    if (err) done(err);
+    mkdirp(BUILD_DIR, done);
+  });
+});
 
 /******************************************************************************************
  * Scripts
@@ -53,11 +66,15 @@ function bundle_scripts(bundler) {
     ;
 }
 
-gulp.task('scripts.clean', function(done) {
-  rimraf(SCRIPT_BUILD_FILE, done);
+gulp.task('scripts.lint', function() {
+  return gulp.src(['!build/*.js', '!build/**/*.js', '!node_modules/**/*.js', '!**/node_modules/**/*.js', '*.js', '**/*.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter('default', {verbose: true}))
+    .pipe(jshint.reporter('fail'))
+    ;
 });
 
-gulp.task('scripts.build', ['scripts.clean'], function() {
+gulp.task('scripts.build', function() {
   return bundle_scripts(browserify(script_options));
 });
 
@@ -100,20 +117,16 @@ gulp.task('scripts.watch', function() {
 var STYLE_SRC_FILE   = SRC_DIR+'/index.scss';
 var STYLE_BUILD_FILE = BUILD_DIR+'/build.css';
 
-gulp.task('styles.clean', function(done) {
-  rimraf(STYLE_BUILD_FILE, done);
-});
-
-gulp.task('styles.build', ['styles.clean'], function(done) {
+gulp.task('styles.build', function(done) {
   return composer()
     .entry(STYLE_SRC_FILE)
     .use(composer.plugins.url({dir: BUILD_DIR}))
     .compose()
-      .pipe(source('build.css'))
-      .pipe(buffer())
-      .pipe(prefixer({browsers: ['last 2 versions']}))
-      .pipe(gif(!debug, minify()))
-      .pipe(gulp.dest(BUILD_DIR))
+    .pipe(source('build.css'))
+    .pipe(buffer())
+    .pipe(prefixer({browsers: ['last 2 versions']}))
+    .pipe(gif(!debug, minify()))
+    .pipe(gulp.dest(BUILD_DIR))
     ;
 });
 
@@ -135,7 +148,6 @@ gulp.task('package.link', function(done) {
 });
 
 gulp.task('package.install', function() {
-  var gignore = require('gulp-ignore');
   return gulp.src(['!node_modules/**/package.json', '!**/node_modules/**/package.json', 'package.json', '**/package.json'])
     .pipe(installer())
     ;
@@ -164,8 +176,12 @@ gulp.task('watch', function(done) {
   sequence(['package.watch', 'scripts.watch', 'styles.watch'], done);
 });
 
+gulp.task('clean', function(done) {
+  sequence(['assets.clean'], done);
+});
+
 gulp.task('build', function(done) {
-  sequence(['scripts.build', 'styles.build'], done);
+  sequence('scripts.lint', ['scripts.build', 'styles.build'], done);
 });
 
 gulp.task('test', function(done) {
@@ -173,5 +189,9 @@ gulp.task('test', function(done) {
 });
 
 gulp.task('default', function(done) {
-  sequence('build', 'test', done);
+  sequence('build', done);
+});
+
+gulp.task('all', function(done) {
+  sequence('clean', 'build', 'test', done);
 });
