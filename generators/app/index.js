@@ -31,6 +31,12 @@ module.exports = generators.Base.extend({
     );
 
     this.fs.copyTpl(
+      this.templatePath('gulpfile.js'),
+      this.destinationPath('gulpfile.js'),
+      data
+    );
+
+    this.fs.copyTpl(
       this.templatePath('index.js'),
       this.destinationPath('index.js'),
       data
@@ -72,7 +78,7 @@ module.exports = generators.Base.extend({
   },
 
   install: function() {
-    this.npmInstall([], {registry: 'http://npm:8080'});
+    this.npmInstall([]/*, {registry: 'http://npm:8080'}*/);
   }
 
 });
