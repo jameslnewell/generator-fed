@@ -34,3 +34,4 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
  - Style sheets watched with SASS Composer
  - lint JS and CSS
  - image assets optimised
+ - run a full build in a git-pre-commit hook
