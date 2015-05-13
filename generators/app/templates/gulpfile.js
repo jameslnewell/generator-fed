@@ -58,7 +58,6 @@ var script_options = {
 
 function bundle_scripts(bundler) {
   return bundler.bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('build.js'))
     .pipe(buffer())
     .pipe(gif(!debug, uglify()))
