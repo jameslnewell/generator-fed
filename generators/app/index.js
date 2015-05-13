@@ -13,7 +13,7 @@ module.exports = generators.Base.extend({
     };
 
     this.fs.copyTpl(
-      this.templatePath('.gitignore'),
+      this.templatePath('gitignore'),
       this.destinationPath('.gitignore'),
       data
     );
