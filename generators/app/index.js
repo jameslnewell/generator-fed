@@ -37,20 +37,32 @@ module.exports = generators.Base.extend({
     );
 
     this.fs.copyTpl(
-      this.templatePath('index.js'),
-      this.destinationPath('index.js'),
+      this.templatePath('karma.conf.js'),
+      this.destinationPath('karma.conf.js'),
       data
     );
 
     this.fs.copyTpl(
-      this.templatePath('index.scss'),
-      this.destinationPath('index.scss'),
+      this.templatePath('assets/package.json'),
+      this.destinationPath('assets/package.json'),
       data
     );
 
     this.fs.copyTpl(
-      this.templatePath('test/index.js'),
-      this.destinationPath('test/index.js'),
+      this.templatePath('assets/index.js'),
+      this.destinationPath('assets/index.js'),
+      data
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('assets/index.scss'),
+      this.destinationPath('assets/index.scss'),
+      data
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('assets/test/index.js'),
+      this.destinationPath('assets/test/index.js'),
       data
     );
 
@@ -69,7 +81,7 @@ module.exports = generators.Base.extend({
       //initialise Git
       self.spawnCommand('git', ['init']);
 
-      //setup Git pre-commit hook
+      //setup Git pre-commit hook //FIXME, wait till after spawn command finishes
       this.fs.copyTpl(
         this.templatePath('pre-commit'),
         this.destinationPath('.git/hook/pre-commit'),

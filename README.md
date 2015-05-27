@@ -20,7 +20,7 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - linted with JSHint
 - built with Browserify
 - minified with Uglify
-- tested with Mochify
+- tested with Karma/Mocha/Istanbul
 - watched with Watchify
 
 ### Cascading Style Sheets
@@ -35,4 +35,3 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 ## TODO:
  - Style sheets watched with SASS Composer
  - image assets optimised
- - run tests in sub-modules (excluding build/, node_modules/ and **/node_modules/ folders)
