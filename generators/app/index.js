@@ -37,12 +37,6 @@ module.exports = generators.Base.extend({
     );
 
     this.fs.copyTpl(
-      this.templatePath('karma.conf.js'),
-      this.destinationPath('karma.conf.js'),
-      data
-    );
-
-    this.fs.copyTpl(
       this.templatePath('assets/package.json'),
       this.destinationPath('assets/package.json'),
       data

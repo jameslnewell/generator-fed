@@ -15,19 +15,14 @@
     "gulp-util": "^3.0.4",
     "linklocal": "^2.5.1",
     "minimist": "^1.1.1",
+    "mkdirp": "^0.5.0",
+    "mochify": "^2.8.1",
     "rimraf": "^2.3.3",
     "run-sequence": "^1.1.0",
-    "sass-composer": "git+https://github.com/digitaledgeit/sass-composer.git#master",
+    "sass-composer": "2.0.0-beta3",
     "uglify-js": "^2.4.20",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "mkdirp": "^0.5.0",
-    "browserify-istanbul": "^0.2.1",
-    "karma": "^0.12.33",
-    "karma-browserify": "^4.2.1",
-    "karma-coverage": "0.2.6",
-    "karma-mocha": "^0.1.10",
-    "karma-mocha-reporter": "^1.0.2",
-    "karma-phantomjs-launcher": "^0.1.4"
+    "watchify": "^3.2.1"
   }
 }

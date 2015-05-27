@@ -1,43 +1,43 @@
-var gulp        = require('gulp');
-var gif         = require('gulp-if');
-var installer   = require('gulp-install');
-var gutil       = require('gulp-util');
-var prefixer    = require('gulp-autoprefixer');
-var uglify      = require('gulp-uglify');
-var minify      = require('gulp-minify-css');
-var sequence    = require('run-sequence');
+var gulp = require('gulp');
+var gif = require('gulp-if');
+var installer = require('gulp-install');
+var gutil = require('gulp-util');
+var prefixer = require('gulp-autoprefixer');
+var uglify = require('gulp-uglify');
+var minify = require('gulp-minify-css');
+var sequence = require('run-sequence');
 
-var fs          = require('fs');
-var path        = require('path');
-var mkdirp      = require('mkdirp');
-var rimraf      = require('rimraf');
-var exec        = require('child_process').exec;
+var fs = require('fs');
+var path = require('path');
+var mkdirp = require('mkdirp');
+var rimraf = require('rimraf');
+var exec = require('child_process').exec;
 
-var buffer      = require('vinyl-buffer');
-var source      = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var source = require('vinyl-source-stream');
 
-var jshint      = require('gulp-jshint');
-var browserify  = require('browserify');
-var watchify    = require('watchify');
-var karma       = require('karma').server;
+var jshint = require('gulp-jshint');
+var browserify = require('browserify');
+var watchify = require('watchify');
+var mochify = require('mochify');
 
-var composer    = require('sass-composer');
+var composer = require('sass-composer');
 
-var minimist    = require('minimist');
+var minimist = require('minimist');
 
-var chokidar    = require('chokidar');
+var chokidar = require('chokidar');
 
-var debug       = minimist(process.argv.slice(2)).debug;
+var debug = minimist(process.argv.slice(2)).debug;
 
-var SRC_DIR     = __dirname+'/assets';
-var BUILD_DIR   = __dirname+'/assets/build';
+var SRC_DIR = __dirname + '/assets';
+var BUILD_DIR = __dirname + '/assets/build';
 
 /******************************************************************************************
  * Assets
  ******************************************************************************************/
 
-gulp.task('assets.clean', function(done) {
-  rimraf(BUILD_DIR, function(err) {
+gulp.task('assets.clean', function (done) {
+  rimraf(BUILD_DIR, function (err) {
     if (err) done(err);
     mkdirp(BUILD_DIR, done);
   });
@@ -47,13 +47,13 @@ gulp.task('assets.clean', function(done) {
  * Scripts
  ******************************************************************************************/
 
-var SCRIPT_SRC_FILE   = SRC_DIR+'/index.js';
-var SCRIPT_BUILD_FILE = BUILD_DIR+'/build.js';
+var SCRIPT_SRC_FILE = SRC_DIR + '/index.js';
+var SCRIPT_BUILD_FILE = BUILD_DIR + '/build.js';
 
 var script_options = {
-  debug:    debug,
-  bare:     true,
-  entries:  SCRIPT_SRC_FILE
+  debug: debug,
+  bare: true,
+  entries: SCRIPT_SRC_FILE
 };
 
 function bundle_scripts(bundler) {
@@ -62,52 +62,56 @@ function bundle_scripts(bundler) {
     .pipe(buffer())
     .pipe(gif(!debug, uglify()))
     .pipe(gulp.dest(BUILD_DIR))
-    ;
+  ;
 }
 
-gulp.task('scripts.lint', function() {
+gulp.task('scripts.lint', function () {
   return gulp.src([
-    '!'+SRC_DIR+'/build/*.js', '!'+SRC_DIR+'/build/**/*.js', '!'+SRC_DIR+'/node_modules/**/*.js', '!'+SRC_DIR+'/**/node_modules/**/*.js',
-    SRC_DIR+'/*.js', SRC_DIR+'/**/*.js'
+    '!' + SRC_DIR + '/build/*.js', '!' + SRC_DIR + '/build/**/*.js', '!' + SRC_DIR + '/node_modules/**/*.js', '!' + SRC_DIR + '/**/node_modules/**/*.js',
+    SRC_DIR + '/*.js', SRC_DIR + '/**/*.js'
   ])
     .pipe(jshint())
     .pipe(jshint.reporter('default', {verbose: true}))
     .pipe(jshint.reporter('fail'))
-    ;
+  ;
 });
 
-gulp.task('scripts.build', function() {
+gulp.task('scripts.build', function () {
   return bundle_scripts(browserify(script_options));
 });
 
-gulp.task('scripts.test', function(done) {
-  karma.start({
-    configFile: __dirname+'/karma.conf.js',
-    singleRun:  true
-  }, done);
+gulp.task('scripts.test', function () {
+  return mochify(SRC_DIR + '/**/test/*.js', {
+    cover: true,
+    glob: {
+      ignore: [,
+        SRC_DIR + '/**/node_modules/**/test/*.js'
+      ]
+    }
+  }).bundle();
 });
 
-gulp.task('scripts.watch', function() {
+gulp.task('scripts.watch', function () {
 
   var bundler = watchify(browserify(script_options))
-      .on('log', gutil.log)
-      .on('update', function(files) {
+    .on('log', gutil.log)
+    .on('update', function (files) {
 
-        //make the file paths relative to the root dir
-        files = files.map(function(file) {
-          return path.relative(__dirname, file);
-        });
+      //make the file paths relative to the root dir
+      files = files.map(function (file) {
+        return path.relative(__dirname, file);
+      });
 
-        //log
-        gutil.log(gutil.colors.blue('scripts changed:'), files.join(','));
-        gutil.log(gutil.colors.blue('scripts building...'));
+      //log
+      gutil.log(gutil.colors.blue('scripts changed:'), files.join(','));
+      gutil.log(gutil.colors.blue('scripts building...'));
 
-        //bundle the scripts
-        return bundle_scripts(bundler);
-      })
-    ;
+      //bundle the scripts
+      return bundle_scripts(bundler);
+    })
+  ;
 
-  process.once('SIGINT', function() {
+  process.once('SIGINT', function () {
     bundler.close();
   });
 
@@ -119,10 +123,10 @@ gulp.task('scripts.watch', function() {
  * Styles
  ******************************************************************************************/
 
-var STYLE_SRC_FILE   = SRC_DIR+'/index.scss';
-var STYLE_BUILD_FILE = BUILD_DIR+'/build.css';
+var STYLE_SRC_FILE = SRC_DIR + '/index.scss';
+var STYLE_BUILD_FILE = BUILD_DIR + '/build.css';
 
-gulp.task('styles.build', function() {
+gulp.task('styles.build', function () {
   return composer()
     .entry(STYLE_SRC_FILE)
     .use(composer.plugins.url({dir: BUILD_DIR}))
@@ -132,10 +136,10 @@ gulp.task('styles.build', function() {
     .pipe(prefixer({browsers: ['last 2 versions']}))
     .pipe(gif(!debug, minify()))
     .pipe(gulp.dest(BUILD_DIR))
-    ;
+  ;
 });
 
-gulp.task('styles.watch', function(done) {
+gulp.task('styles.watch', function (done) {
   gutil.log(gutil.colors.red('Not implemented yet'));
   done();
 });
@@ -144,7 +148,7 @@ gulp.task('styles.watch', function(done) {
  * Packages
  ******************************************************************************************/
 
-gulp.task('package.link', function(done) {
+gulp.task('package.link', function (done) {
   exec('node ./node_modules/linklocal/bin/linklocal.js link -r -f "%s"', {cwd: SRC_DIR}, function (err, stdout, stderr) {
     if (err) return console.log(stderr, stdout) && done(err);
     console.log(stderr);
@@ -152,21 +156,21 @@ gulp.task('package.link', function(done) {
   });
 });
 
-gulp.task('package.install', function() {
-  return gulp.src(['!node_modules/**/package.json', '!**/node_modules/**/package.json', SRC_DIR+'/package.json', SRC_DIR+'/**/package.json'])
+gulp.task('package.install', function () {
+  return gulp.src(['!node_modules/**/package.json', '!**/node_modules/**/package.json', SRC_DIR + '/package.json', SRC_DIR + '/**/package.json'])
     .pipe(installer())
     ;
 });
 
-gulp.task('package.watch', function() {
+gulp.task('package.watch', function () {
 
   var watcher = chokidar.watch(['package.json'], {})
-      .on('change', function() {
-        gulp.start('package.link', 'package.install');
-      })
-    ;
+    .on('change', function () {
+      gulp.start('package.link', 'package.install');
+    })
+  ;
 
-  process.once('SIGINT', function() {
+  process.once('SIGINT', function () {
     watcher.close();
   });
 
@@ -177,26 +181,26 @@ gulp.task('package.watch', function() {
  * Common
  ******************************************************************************************/
 
-gulp.task('watch', function(done) {
+gulp.task('watch', function (done) {
   sequence(['package.watch', 'scripts.watch', 'styles.watch'], done);
 });
 
-gulp.task('clean', function(done) {
+gulp.task('clean', function (done) {
   sequence(['assets.clean'], done);
 });
 
-gulp.task('build', function(done) {
+gulp.task('build', function (done) {
   sequence('scripts.lint', ['scripts.build', 'styles.build'], done);
 });
 
-gulp.task('test', function(done) {
+gulp.task('test', function (done) {
   sequence(['scripts.test'], done);
 });
 
-gulp.task('default', function(done) {
+gulp.task('default', function (done) {
   sequence('build', done);
 });
 
-gulp.task('all', function(done) {
+gulp.task('all', function (done) {
   sequence('clean', 'build', 'test', done);
 });
