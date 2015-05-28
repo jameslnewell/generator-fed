@@ -16,13 +16,14 @@
     "linklocal": "^2.5.1",
     "minimist": "^1.1.1",
     "mkdirp": "^0.5.0",
-    "mochify": "^2.8.1",
+    "mochify": "jameslnewell/mochify.js",
     "rimraf": "^2.3.3",
     "run-sequence": "^1.1.0",
     "sass-composer": "2.0.0-beta3",
     "uglify-js": "^2.4.20",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.2.1"
+    "watchify": "^3.2.1",
+    "through2": "^0.6.5"
   }
 }

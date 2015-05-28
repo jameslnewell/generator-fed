@@ -6,6 +6,7 @@ var prefixer = require('gulp-autoprefixer');
 var uglify = require('gulp-uglify');
 var minify = require('gulp-minify-css');
 var sequence = require('run-sequence');
+var through = require('through2');
 
 var fs = require('fs');
 var path = require('path');
@@ -20,6 +21,7 @@ var jshint = require('gulp-jshint');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var mochify = require('mochify');
+var istanbul = require('mochify-istanbul');
 
 var composer = require('sass-composer');
 
@@ -56,7 +58,7 @@ var script_options = {
   entries: SCRIPT_SRC_FILE
 };
 
-function bundle_scripts(bundler) {
+function browserifier(bundler) {
   return bundler.bundle()
     .pipe(source('build.js'))
     .pipe(buffer())
@@ -77,18 +79,7 @@ gulp.task('scripts.lint', function () {
 });
 
 gulp.task('scripts.build', function () {
-  return bundle_scripts(browserify(script_options));
-});
-
-gulp.task('scripts.test', function () {
-  return mochify(SRC_DIR + '/**/test/*.js', {
-    cover: true,
-    glob: {
-      ignore: [,
-        SRC_DIR + '/**/node_modules/**/test/*.js'
-      ]
-    }
-  }).bundle();
+  return browserifier(browserify(script_options));
 });
 
 gulp.task('scripts.watch', function () {
@@ -107,7 +98,7 @@ gulp.task('scripts.watch', function () {
       gutil.log(gutil.colors.blue('scripts building...'));
 
       //bundle the scripts
-      return bundle_scripts(bundler);
+      return browserifier(bundler);
     })
   ;
 
@@ -115,8 +106,48 @@ gulp.task('scripts.watch', function () {
     bundler.close();
   });
 
-  return bundle_scripts(bundler);
+  return browserifier(bundler);
+});
 
+function mochifier(opts, done) {
+
+  var output = through()
+    .pipe(process.stdout)
+    .on('end', function() {
+      done();
+    })
+  ;
+
+  var b = mochify(SRC_DIR + '/**/test/*.js', {
+    output: output,
+    glob: {
+      ignore: [
+        SRC_DIR + '/**/node_modules/**/test/*.js'
+      ]
+    }
+  })
+    .on('error', function(err) {
+      done(err);
+    })
+  ;
+
+  if (opts.cover) {
+    b.plugin(istanbul, {
+      dir:      BUILD_DIR+'/coverage',
+      exclude:  ['**/node_modules/**/*'],
+      report:   ['text']
+    });
+  }
+
+  b.bundle();
+}
+
+gulp.task('scripts.test', function(done) {
+  mochifier({}, done);
+});
+
+gulp.task('scripts.coverage', function(done) {
+  mochifier({cover: true}, done);
 });
 
 /******************************************************************************************
@@ -136,7 +167,7 @@ gulp.task('styles.build', function () {
     .pipe(prefixer({browsers: ['last 2 versions']}))
     .pipe(gif(!debug, minify()))
     .pipe(gulp.dest(BUILD_DIR))
-  ;
+    ;
 });
 
 gulp.task('styles.watch', function (done) {
@@ -159,16 +190,16 @@ gulp.task('package.link', function (done) {
 gulp.task('package.install', function () {
   return gulp.src(['!node_modules/**/package.json', '!**/node_modules/**/package.json', SRC_DIR + '/package.json', SRC_DIR + '/**/package.json'])
     .pipe(installer())
-    ;
+  ;
 });
 
 gulp.task('package.watch', function () {
 
   var watcher = chokidar.watch(['package.json'], {})
-    .on('change', function () {
-      gulp.start('package.link', 'package.install');
-    })
-  ;
+      .on('change', function () {
+        gulp.start('package.link', 'package.install');
+      })
+    ;
 
   process.once('SIGINT', function () {
     watcher.close();
