@@ -23,6 +23,9 @@ var watchify = require('watchify');
 var mochify = require('mochify');
 var istanbul = require('mochify-istanbul');
 
+var imagemin = require('gulp-imagemin');
+var pngquant = require('imagemin-pngquant');
+
 var composer = require('sass-composer');
 
 var minimist = require('minimist');
@@ -43,6 +46,16 @@ gulp.task('assets.clean', function (done) {
     if (err) done(err);
     mkdirp(BUILD_DIR, done);
   });
+});
+
+gulp.task('assets.compress-images', function () {
+  return gulp.src(SRC_DIR + '/**/*')
+    .pipe(imagemin({
+      progressive: true,
+      svgoPlugins: [{removeViewBox: false}],
+      use: [pngquant()]
+    }))
+    .pipe(gulp.dest(BUILD_DIR));
 });
 
 /******************************************************************************************
@@ -217,7 +230,7 @@ gulp.task('watch', function (done) {
 });
 
 gulp.task('clean', function (done) {
-  sequence(['assets.clean'], done);
+  sequence(['assets.clean', 'assets.compress-images'], done);
 });
 
 gulp.task('build', function (done) {

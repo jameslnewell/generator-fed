@@ -31,7 +31,7 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 
 ### Assets
 - urls rewritten and copied to the build dir
+- images compressed with imagemin
 
 ## TODO:
  - Style sheets watched with SASS Composer
- - image assets optimised
