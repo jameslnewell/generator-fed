@@ -29,7 +29,7 @@ var minimist = require('minimist');
 
 var chokidar = require('chokidar');
 
-var debug = minimist(process.argv.slice(2)).debug;
+var prod = minimist(process.argv.slice(2)).prod;
 
 var SRC_DIR = __dirname + '/assets';
 var BUILD_DIR = __dirname + '/assets/build';
@@ -53,7 +53,7 @@ var SCRIPT_SRC_FILE = SRC_DIR + '/index.js';
 var SCRIPT_BUILD_FILE = BUILD_DIR + '/build.js';
 
 var script_options = {
-  debug: debug,
+  debug: prod,
   bare: true,
   entries: SCRIPT_SRC_FILE
 };
@@ -62,9 +62,9 @@ function browserifier(bundler) {
   return bundler.bundle()
     .pipe(source('build.js'))
     .pipe(buffer())
-    .pipe(gif(!debug, uglify()))
+    .pipe(gif(prod, uglify()))
     .pipe(gulp.dest(BUILD_DIR))
-  ;
+    ;
 }
 
 gulp.task('scripts.lint', function () {
@@ -75,7 +75,7 @@ gulp.task('scripts.lint', function () {
     .pipe(jshint())
     .pipe(jshint.reporter('default', {verbose: true}))
     .pipe(jshint.reporter('fail'))
-  ;
+    ;
 });
 
 gulp.task('scripts.build', function () {
@@ -85,22 +85,22 @@ gulp.task('scripts.build', function () {
 gulp.task('scripts.watch', function () {
 
   var bundler = watchify(browserify(script_options))
-    .on('log', gutil.log)
-    .on('update', function (files) {
+      .on('log', gutil.log)
+      .on('update', function (files) {
 
-      //make the file paths relative to the root dir
-      files = files.map(function (file) {
-        return path.relative(__dirname, file);
-      });
+        //make the file paths relative to the root dir
+        files = files.map(function (file) {
+          return path.relative(__dirname, file);
+        });
 
-      //log
-      gutil.log(gutil.colors.blue('scripts changed:'), files.join(','));
-      gutil.log(gutil.colors.blue('scripts building...'));
+        //log
+        gutil.log(gutil.colors.blue('scripts changed:'), files.join(','));
+        gutil.log(gutil.colors.blue('scripts building...'));
 
-      //bundle the scripts
-      return browserifier(bundler);
-    })
-  ;
+        //bundle the scripts
+        return browserifier(bundler);
+      })
+    ;
 
   process.once('SIGINT', function () {
     bundler.close();
@@ -112,42 +112,39 @@ gulp.task('scripts.watch', function () {
 function mochifier(opts, done) {
 
   var output = through()
-    .pipe(process.stdout)
-    .on('end', function() {
-      done();
-    })
-  ;
+      .pipe(process.stdout)
+      .on('end', function() {
+        done();
+      })
+    ;
 
   var b = mochify(SRC_DIR + '/**/test/*.js', {
-    output: output,
-    glob: {
-      ignore: [
-        SRC_DIR + '/**/node_modules/**/test/*.js'
-      ]
-    }
-  })
-    .on('error', function(err) {
-      done(err);
+      output: output,
+      cover:  true,
+      glob: {
+        ignore: [
+          SRC_DIR + '/**/node_modules/**/test/*.js'
+        ]
+      }
     })
-  ;
+      .on('error', function(err) {
+        done(err);
+      })
+    ;
 
-  if (opts.cover) {
-    b.plugin(istanbul, {
-      dir:      BUILD_DIR+'/coverage',
-      exclude:  ['**/node_modules/**/*'],
-      report:   ['text']
-    });
-  }
+  //if (opts.cover) {
+  //  b.plugin(istanbul, {
+  //    dir:      BUILD_DIR+'/coverage',
+  //    //exclude:  ['test/**', '**/node_modules/**/*'],
+  //    report:   ['text', 'html']
+  //  });
+  //}
 
   b.bundle();
 }
 
 gulp.task('scripts.test', function(done) {
   mochifier({}, done);
-});
-
-gulp.task('scripts.coverage', function(done) {
-  mochifier({cover: true}, done);
 });
 
 /******************************************************************************************
@@ -165,7 +162,7 @@ gulp.task('styles.build', function () {
     .pipe(source('build.css'))
     .pipe(buffer())
     .pipe(prefixer({browsers: ['last 2 versions']}))
-    .pipe(gif(!debug, minify()))
+    .pipe(gif(prod, minify()))
     .pipe(gulp.dest(BUILD_DIR))
     ;
 });
@@ -190,7 +187,7 @@ gulp.task('package.link', function (done) {
 gulp.task('package.install', function () {
   return gulp.src(['!node_modules/**/package.json', '!**/node_modules/**/package.json', SRC_DIR + '/package.json', SRC_DIR + '/**/package.json'])
     .pipe(installer())
-  ;
+    ;
 });
 
 gulp.task('package.watch', function () {

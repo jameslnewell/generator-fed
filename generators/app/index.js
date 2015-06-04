@@ -73,16 +73,19 @@ module.exports = generators.Base.extend({
       }
 
       //initialise Git
-      self.spawnCommand('git', ['init']);
+      self.spawnCommand('git', ['init']).on('close', function(err) {
+        if (err) return done(err);
 
-      //setup Git pre-commit hook //FIXME, wait till after spawn command finishes
-      this.fs.copyTpl(
-        this.templatePath('pre-commit'),
-        this.destinationPath('.git/hook/pre-commit'),
-        data
-      );
+        //setup Git pre-commit hook
+        self.fs.copyTpl(
+          self.templatePath('pre-commit'),
+          self.destinationPath('.git/hook/pre-commit'),
+          data
+        );
 
-      done();
+        done();
+      });
+
     });
 
   },

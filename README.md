@@ -11,16 +11,17 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
     yo fed
 
 ## Features
-- Async builds with Gulp
-- Create a Git repo
-- Runs a full build in before commit
+- async builds with Gulp
+- initialise a git repo (optional)
+- pre-commit hook to run a full build (optional)
 
 ### Javascript
 - dependencies from NPM
 - linted with JSHint
 - built with Browserify
 - minified with Uglify
-- tested with Karma/Mocha/Istanbul
+- tested with Mochify
+- coverage with Istanbul
 - watched with Watchify
 
 ### Cascading Style Sheets
@@ -33,5 +34,5 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - urls rewritten and copied to the build dir
 
 ## TODO:
- - Style sheets watched with SASS Composer
+ - watched with SASS Composer (style sheets)
  - image assets optimised
