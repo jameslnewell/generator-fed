@@ -38,3 +38,4 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
  - watched with SASS Composer (style sheets)
  - style sheets watched with SASS Composer
  - assets cache busted
+ - better coverage with istanbul
