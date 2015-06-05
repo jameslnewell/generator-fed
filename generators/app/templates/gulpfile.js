@@ -243,5 +243,5 @@ gulp.task('default', function (done) {
 });
 
 gulp.task('all', function (done) {
-  sequence('clean', 'build', 'test', done);
+  sequence('clean', 'package.install', 'build', 'test', done);
 });
