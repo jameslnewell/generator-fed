@@ -21,7 +21,6 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - built with Browserify
 - minified with Uglify
 - tested with Mochify
-- coverage with Istanbul
 - watched with Watchify
 
 ### Cascading Style Sheets
@@ -38,4 +37,4 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
  - watched with SASS Composer (style sheets)
  - style sheets watched with SASS Composer
  - assets cache busted
- - better coverage with istanbul
+ - better coverage with Istanbul

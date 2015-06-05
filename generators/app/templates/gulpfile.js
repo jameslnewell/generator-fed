@@ -21,7 +21,7 @@ var jshint = require('gulp-jshint');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var mochify = require('mochify');
-var istanbul = require('mochify-istanbul');
+//var istanbul = require('mochify-istanbul');
 
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
