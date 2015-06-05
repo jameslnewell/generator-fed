@@ -36,4 +36,5 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 
 ## TODO:
  - watched with SASS Composer (style sheets)
- - Style sheets watched with SASS Composer
+ - style sheets watched with SASS Composer
+ - assets cache busted
