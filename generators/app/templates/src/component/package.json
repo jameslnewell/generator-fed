@@ -1,0 +1,7 @@
+{
+  "name": "<%= name %>-frontend",
+  "private": true,
+  "devDependencies": {
+    "phantomjs-polyfill": "0.0.1"
+  }
+}

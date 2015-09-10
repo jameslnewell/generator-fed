@@ -6,92 +6,59 @@ module.exports = generators.Base.extend({
     generators.Base.apply(this, arguments);
   },
 
-  writing: function() {
-
-    var data = {
-      name: 'my-app'
-    };
-
-    this.fs.copyTpl(
-      this.templatePath('gitignore'),
-      this.destinationPath('.gitignore'),
-      data
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('package.json'),
-      this.destinationPath('package.json'),
-      data
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('README.md'),
-      this.destinationPath('README.md'),
-      data
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('gulpfile.js'),
-      this.destinationPath('gulpfile.js'),
-      data
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('assets/package.json'),
-      this.destinationPath('assets/package.json'),
-      data
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('assets/index.js'),
-      this.destinationPath('assets/index.js'),
-      data
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('assets/index.scss'),
-      this.destinationPath('assets/index.scss'),
-      data
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('assets/test/index.js'),
-      this.destinationPath('assets/test/index.js'),
-      data
-    );
-
-    var self = this;
+  askForName: function() {
     var done = this.async();
-    this.prompt({
-      type:     'confirm',
-      name:     'git',
-      message:  'Initialise Git?'
-    }, function(value) {
-
-      if (!value.git) {
-        return done();
-      }
-
-      //initialise Git
-      self.spawnCommand('git', ['init']).on('close', function(err) {
-        if (err) return done(err);
-
-        //setup Git pre-commit hook
-        self.fs.copyTpl(
-          self.templatePath('pre-commit'),
-          self.destinationPath('.git/hook/pre-commit'),
-          data
-        );
-
+    this.prompt(
+      {
+        type:     'input',
+        name:     'name',
+        message:  'Project name?',
+        store:    true,
+        default:  this.config.get('name'),
+        validate: function(value) {
+          return value.length > 0;
+        }
+      },
+      function(props) {
+        this.name = props.name;
         done();
-      });
-
-    });
-
+      }.bind(this)
+    );
   },
 
+  askToInstall: function() {
+    var done = this.async();
+    this.prompt(
+      {
+        type:     'confirm',
+        name:     'install',
+        message:  'Install npm packages?',
+        default:  false
+      },
+      function(props) {
+        this.install = props.install;
+        done();
+      }.bind(this)
+    );
+  },
+
+  /**
+   * Write project files
+   */
+  writing: function() {
+    this.fs.copy(this.templatePath('**/*'), this.destinationPath('.'));
+    this.fs.copyTpl(this.templatePath('README.md'), this.destinationPath('README.md'), {name: this.name});
+    this.fs.copyTpl(this.templatePath('package.json'), this.destinationPath('package.json'), {name: this.name});
+    this.fs.copyTpl(this.templatePath('src/component/package.json'), this.destinationPath('src/component/package.json'), {name: this.name});
+  },
+
+  /**
+   * Install npm packages
+   */
   install: function() {
-    this.npmInstall([]/*, {registry: 'http://npm:8080'}*/);
+    if (this.install) {
+      this.npmInstall();
+    }
   }
 
 });

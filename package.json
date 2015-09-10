@@ -1,6 +1,6 @@
 {
   "name": "generator-fed",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "Yeoman generator for Frontend Development with Browserify and SASS Composer.",
   "files": [
     "generators"
@@ -13,6 +13,6 @@
     "url": "https://github.com/jameslnewell/generator-fed.git"
   },
   "dependencies": {
-    "yeoman-generator": "^0.19.2"
+    "yeoman-generator": "^0.20.3"
   }
 }

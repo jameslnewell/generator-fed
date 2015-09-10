@@ -11,30 +11,30 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
     yo fed
 
 ## Features
-- async builds with Gulp
-- initialise a git repo (optional)
-- pre-commit hook to run a full build (optional)
+- async builds with `gulp`
 
-### Javascript
-- dependencies from NPM
-- linted with JSHint
-- built with Browserify
-- minified with Uglify
-- tested with Mochify
-- watched with Watchify
+### Scripts
+- dependencies from `npm`
+- linted with `standard`
+- built with `browserify`
+- minified with `uglify`
+- tested with `karma-mocha`
+- test coverage with `istanbul`
+- watched with `gulp`
 
-### Cascading Style Sheets
-- dependencies from NPM
-- built with SASS Composer
-- prefixed with Autoprefixer
-- minified with css-minify
+### Styles
+- dependencies from `npm`
+- built with `sass-composer`
+- prefixed with `autoprefixer`
+- minified with `clean-css`
+- watched with `gulp`
 
 ### Assets
-- urls rewritten and copied to the build dir
-- images optimised with imagemin
+- urls rewritten and copied to the build dir with `sass-composer`
+- images optimised with `imagemin`
 
 ## TODO:
- - watched with SASS Composer (style sheets)
- - style sheets watched with SASS Composer
- - assets cache busted
- - better coverage with Istanbul
+- make `karma-threshold-reporter` actually break the build
+- split component specific stuff into a sub-generator and create another sub-generator for static content specific stuff
+- `karma-browserifast` might bundle tests faster?
+- `testem` might be nicer for debugging tests?

@@ -1,5 +1,6 @@
 .idea
-build
-node_modules
-Thumbs.db
+dist/
+node_modules/
 .DS_Store
+Thumbs.db
+npm-debug.log
