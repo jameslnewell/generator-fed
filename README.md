@@ -16,7 +16,7 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 ### Scripts
 - dependencies from `npm`
 - linted with `standard`
-- built with `browserify`
+- bundled with `browserify`
 - minified with `uglify`
 - tested with `karma-mocha`
 - test coverage with `istanbul`
@@ -24,7 +24,7 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 
 ### Styles
 - dependencies from `npm`
-- built with `sass-composer`
+- bundled with `sass-composer`
 - prefixed with `autoprefixer`
 - minified with `clean-css`
 - watched with `gulp`
