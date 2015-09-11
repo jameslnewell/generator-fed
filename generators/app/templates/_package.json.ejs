@@ -1,0 +1,9 @@
+{
+  "name": "<%= name %>",
+  "private": true,
+  "dependencies": {
+    <%- Object.keys(dependencies).map(function(name) {
+      return '"'+name+'": "'+dependencies[name]+'"';
+    }).join(',\n    '); %>
+  }
+}

@@ -1,62 +1,121 @@
+var path = require('path');
 var generators = require('yeoman-generator');
+
+function mergeModule(name) {
+  var self = this;
+
+  //get the module config
+  var module = require(path.join(__dirname, 'lib', name))({
+    name:         this.name,
+    tasks:        this.tasks,
+    dependencies: this.dependencies
+  });
+
+  //merge the module files with the app files
+  this.fs.copy(path.join(__dirname, 'lib', name, 'files'), this.destinationPath('.'));
+
+  if (module) {
+
+    //merge the module templates
+    if (module.templates) {
+      for (var i=0; i<module.templates.length; ++i) {
+        var tpl = module.templates[i];
+        this.fs.copyTpl(path.join(__dirname, 'lib', name, 'templates', tpl.src), this.destinationPath(tpl.dest), tpl.data)
+      }
+    }
+
+  }
+
+}
 
 module.exports = generators.Base.extend({
 
-  constructor: function () {
+  constructor: function() {
     generators.Base.apply(this, arguments);
-  },
 
-  askForName: function() {
-    var done = this.async();
-    this.prompt(
-      {
-        type:     'input',
-        name:     'name',
-        message:  'Project name?',
-        store:    true,
-        default:  this.config.get('name'),
-        validate: function(value) {
-          return value.length > 0;
-        }
-      },
-      function(props) {
-        this.name = props.name;
-        done();
-      }.bind(this)
-    );
-  },
+    this.option('name', {
+      type:     String,
+      desc:     'The name of the project'
+    });
 
-  askToInstall: function() {
-    var done = this.async();
-    this.prompt(
-      {
-        type:     'confirm',
-        name:     'install',
-        message:  'Install npm packages?',
-        default:  false
-      },
-      function(props) {
-        this.install = props.install;
-        done();
-      }.bind(this)
-    );
+    this.option('static', {
+      type:     Boolean,
+      desc:     'Whether to include static site generation',
+      defaults: false
+    });
+
+    this.option('install', {
+      type:     Boolean,
+      desc:     'Whether to install npm dependencies',
+      defaults: false
+    });
+
+    this.name = this.options.name;
+
+    this.dependencies = {
+      "del": "^2.0.1",
+      "gulp": "^3.9.0",
+      "mkdirp": "^0.5.0",
+      "readdir": "^0.0.13",
+      "run-sequence": "^1.1.0"
+    };
+
+    this.tasks = {
+      default:  ['build'],
+      all:      ['clean', 'install', 'build', 'test', 'optimise'],
+      install:  [],
+      build:    [],
+      test:     [],
+      optimise: [],
+      watch:    []
+    };
   },
 
   /**
-   * Write project files
+   * Setup the project assets
    */
-  writing: function() {
-    this.fs.copy(this.templatePath('**/*'), this.destinationPath('.'));
-    this.fs.copyTpl(this.templatePath('README.md'), this.destinationPath('README.md'), {name: this.name});
-    this.fs.copyTpl(this.templatePath('package.json'), this.destinationPath('package.json'), {name: this.name});
-    this.fs.copyTpl(this.templatePath('src/component/package.json'), this.destinationPath('src/component/package.json'), {name: this.name});
+  component: function() {
+    mergeModule.call(this, 'component', {name: this.name});
   },
 
   /**
-   * Install npm packages
+   * Setup the project static content
+   */
+  static: function() {
+    if (this.options.static) {
+      mergeModule.call(this, 'static');
+    }
+  },
+
+  /**
+   * Setup the base project files
+   */
+  base: function() {
+
+    this.fs.copy(this.templatePath('_gitignore'), this.destinationPath('.gitignore'));
+    this.fs.copy(this.templatePath('tasks/**'), this.destinationPath('tasks'));
+
+    this.fs.copyTpl(this.templatePath('_gulpfile.js.ejs'), this.destinationPath('gulpfile.js'), {
+      name:   this.name,
+      tasks:  this.tasks
+    });
+
+    this.fs.copyTpl(this.templatePath('_package.json.ejs'), this.destinationPath('package.json'), {
+      name:         this.name,
+      dependencies: this.dependencies
+    });
+
+    this.fs.copyTpl(this.templatePath('_README.md.ejs'), this.destinationPath('README.md'), {
+      name: this.name
+    });
+
+  },
+
+  /**
+   * Install the dependencies
    */
   install: function() {
-    if (this.install) {
+    if (this.options.install) {
       this.npmInstall();
     }
   }

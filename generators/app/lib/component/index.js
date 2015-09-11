@@ -1,7 +1,19 @@
-{
-  "name": "<%= name %>",
-  "private": true,
-  "dependencies": {
+var extend = require('extend');
+
+module.exports = function(ctx) {
+
+  //append the static site tasks to the app tasks
+  ctx.tasks = extend(ctx.tasks, {
+    install:  ['packages.install', 'packages.dedupe'],
+    build:    [['scripts.bundle', 'styles.bundle']],
+    test:     ['scripts.test'],
+    debug:    ['scripts.debug'],
+    optimise: [['scripts.optimise', 'styles.optimise', 'images.optimise'], 'cachebust'],
+    watch:    [['scripts.watch', 'styles.watch', 'packages.watch']]
+  });
+
+  //append the component dependencies to the app dependencies
+  ctx.dependencies = extend(ctx.dependencies, {
     "autoprefixer": "^6.0.2",
     "browserify": "^11.0.1",
     "browserify-istanbul": "^0.2.1",
@@ -25,7 +37,6 @@
     "karma-source-map-support": "^1.1.0",
     "karma-threshold-reporter": "^0.1.15",
     "linklocal": "^2.5.2",
-    "mkdirp": "^0.5.0",
     "mocha": "^2.2.5",
     "npm-cmd": "^0.2.0",
     "queue": "^3.1.0",
@@ -34,5 +45,11 @@
     "uglify-js": "^2.4.20",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
-  }
-}
+  });
+
+  return {
+    templates: [
+      {src: 'src/component/_package.json.ejs', dest: 'src/component/package.json', data: {name: ctx.name}}
+    ]
+  };
+};
