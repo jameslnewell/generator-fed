@@ -13,9 +13,12 @@ module.exports = function(ctx) {
     'gulp-htmlmin': '^1.1.3',
     "gulp-rev-all": "^0.8.21",
     "gulp-rev-napkin": "git+https://github.com/mbbender/gulp-rev-napkin.git",
-    'metalsmith': '^1.7.0',
-    'metalsmith-rootpath': '^0.1.2',
-    'metalsmith-templates': '^0.7.0'
+    "metalsmith": "^1.7.0",
+    "metalsmith-filepath": "^1.0.1",
+    "metalsmith-in-place": "^1.3.1",
+    "metalsmith-layouts": "^1.4.0",
+    "metalsmith-rename": "^1.0.0",
+    "metalsmith-rootpath": "jameslnewell/metalsmith-rootpath"
   });
 
 };

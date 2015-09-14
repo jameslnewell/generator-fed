@@ -50,7 +50,7 @@ module.exports = generators.Base.extend({
       defaults: false
     });
 
-    this.name = this.options.name;
+    this.name = this.options.name || path.basename(path.resolve('.')).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/--/g, '-');
 
     this.dependencies = {
       "del": "^2.0.1",

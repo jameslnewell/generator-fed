@@ -1,9 +1,12 @@
 var gulp        = require('gulp');
 var path        = require('path');
-var metalsmith  = require('metalsmith');
 var minHTML     = require('gulp-htmlmin');
+var metalsmith  = require('metalsmith');
+var rename      = require('metalsmith-rename');
+var layouts     = require('metalsmith-layouts');
+var templates   = require('metalsmith-in-place');
 var rootPath    = require('metalsmith-rootpath');
-var templates   = require('metalsmith-templates');
+var filepath    = require('metalsmith-filepath');
 
 module.exports = function(cfg) {
 
@@ -25,8 +28,11 @@ module.exports = function(cfg) {
       .clean(false)
       .source(src)
       .destination(dest)
+      .use(rename([[/\.ejs$/, '.html']]))
       .use(rootPath())
-      .use(templates('ejs'))
+      .use(filepath({absolute: false}))
+      .use(templates({engine: 'ejs', partials: './templates', pattern: '**/*.html'}))
+      .use(layouts({engine: 'ejs', directory: './layouts', default: 'index.ejs', pattern: '**/*.html'}))
       .build(done)
     ;
 
@@ -36,7 +42,7 @@ module.exports = function(cfg) {
    * Watch content
    *==================================*/
 
-  gulp.task('packages.watch', function() {
+  gulp.task('content.watch', function() {
     gulp.watch(CONTENT_SRC_GLOB, ['content.build']);
   });
 
