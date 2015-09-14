@@ -4,11 +4,12 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 
 ## Installation
 
-    npm install -g generator-fed
+    $ npm install -g generator-fed
 
 ## Usage
 
-    yo fed
+    $ mkdir demo && cd demo
+    $ yo fed [--static] [--install]
 
 ## Features
 - async builds with `gulp`
@@ -32,6 +33,14 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 ### Assets
 - urls rewritten and copied to the build dir with `sass-composer`
 - images optimised with `imagemin`
+
+### Static sites
+(optional)
+
+- templates with `ejs`
+- built with `metalsmith`
+- minified with `html-minifier`
+- watched with `gulp`
 
 ## TODO:
 - make `karma-threshold-reporter` actually break the build
