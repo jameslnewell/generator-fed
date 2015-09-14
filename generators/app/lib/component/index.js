@@ -39,6 +39,7 @@ module.exports = function(ctx) {
     "linklocal": "^2.5.2",
     "mocha": "^2.2.5",
     "npm-cmd": "^0.2.0",
+    "phantomjs": "^1.9.18",
     "queue": "^3.1.0",
     "run-sequence": "^1.1.0",
     "sass-composer": "2.0.0-beta7",
