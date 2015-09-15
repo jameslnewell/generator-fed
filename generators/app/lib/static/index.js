@@ -18,7 +18,7 @@ module.exports = function(ctx) {
     "metalsmith-in-place": "^1.3.1",
     "metalsmith-layouts": "^1.4.0",
     "metalsmith-rename": "^1.0.0",
-    "metalsmith-rootpath": "jameslnewell/metalsmith-rootpath"
+    "metalsmith-rootpath": "^0.1.3"
   });
 
 };
