@@ -68,7 +68,7 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('scripts.watch', function() {
-    gulp.watch(SCRIPT_SRC_GLOB, ['scripts.lint', 'scripts.build']);
+    gulp.watch(SCRIPT_SRC_GLOB, ['scripts.lint', 'scripts.bundle']);
   });
 
   /*==================================

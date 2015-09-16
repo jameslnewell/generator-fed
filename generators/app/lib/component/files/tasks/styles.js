@@ -53,7 +53,7 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('styles.watch', function() {
-    gulp.watch(STYLE_SRC_GLOB, ['styles.build']);
+    gulp.watch(STYLE_SRC_GLOB, ['styles.bundle']);
   });
 
   /*==================================
