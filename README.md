@@ -30,11 +30,11 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - minified with `clean-css`
 - watched with `gulp`
 
-### Assets
+### Images
 - urls rewritten and copied to the build dir with `sass-composer`
 - images optimised with `imagemin`
 
-### Static sites
+### Static content
 (optional)
 
 - templates with `ejs`
