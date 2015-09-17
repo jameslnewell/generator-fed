@@ -11,7 +11,7 @@ var KarmaServer = require('karma').Server;
 
 module.exports = function(cfg) {
 
-  var SCRIPT_SRC_DIR = cfg.srcdir+'/component';
+  var SCRIPT_SRC_DIR = cfg.srcdir+'/assets';
   var SCRIPT_BUILD_DIR = cfg.distdir;
 
   var SCRIPT_SRC_FILE = SCRIPT_SRC_DIR+'/index.js';

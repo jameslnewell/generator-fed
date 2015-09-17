@@ -12,7 +12,8 @@ module.exports = function(cfg) {
 
     var rev = new RevAll({
       dontGlobal: ['coverage'],
-      dontRenameFile: ['bundled.css', 'bundled.js', 'mocha.json']
+      dontRenameFile: ['mocha.json', /\.html$/, 'bundled.css', 'bundled.js'],
+      dontUpdateReference: ['mocha.json', /\.html$/]
     });
 
     return gulp.src([cfg.distdir+'/**'])

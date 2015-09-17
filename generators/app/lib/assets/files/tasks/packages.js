@@ -10,7 +10,7 @@ var finder      = require('finder-on-steroids');
 
 module.exports = function(cfg) {
 
-  var PACKAGE_SRC_DIR = cfg.srcdir+'/component';
+  var PACKAGE_SRC_DIR = cfg.srcdir+'/assets';
   var PACKAGE_BUILD_DIR = cfg.distdir;
 
   var PACKAGE_SRC_GLOB = [

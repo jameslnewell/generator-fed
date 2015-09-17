@@ -2,7 +2,7 @@ module.exports = function(config) {
 
   config.set({
 
-    basePath: 'src/component',
+    basePath: 'src/assets',
 
     files: [
       'node_modules/phantomjs-polyfill/bind-polyfill.js', //polyfill .bind() for phantom JS <v2.0

@@ -74,8 +74,8 @@ module.exports = generators.Base.extend({
   /**
    * Setup the project assets
    */
-  component: function() {
-    mergeModule.call(this, 'component', {name: this.name});
+  assets: function() {
+    mergeModule.call(this, 'assets', {name: this.name});
   },
 
   /**

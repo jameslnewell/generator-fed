@@ -4,7 +4,7 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 
 ## Installation
 
-    $ npm install -g generator-fed
+    $ npm install -g yo generator-fed
 
 ## Usage
 

@@ -50,7 +50,7 @@ module.exports = function(ctx) {
 
   return {
     templates: [
-      {src: 'src/component/_package.json.ejs', dest: 'src/component/package.json', data: {name: ctx.name}}
+      {src: 'src/assets/_package.json.ejs', dest: 'src/assets/package.json', data: {name: ctx.name}}
     ]
   };
 };
