@@ -92,6 +92,7 @@ module.exports = generators.Base.extend({
    */
   base: function() {
 
+    this.fs.copy(this.templatePath('_editorconfig'), this.destinationPath('.editorconfig'));
     this.fs.copy(this.templatePath('_gitignore'), this.destinationPath('.gitignore'));
     this.fs.copy(this.templatePath('tasks/**'), this.destinationPath('tasks'));
 
