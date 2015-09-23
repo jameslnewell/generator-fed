@@ -4,7 +4,7 @@ var del         = require('del');
 var sequence    = require('run-sequence');
 var source      = require('vinyl-source-stream');
 
-var standard    = require('gulp-standard');
+var eslint      = require('gulp-eslint');
 var browserify  = require('browserify');
 var uglify      = require('gulp-uglify');
 var KarmaServer = require('karma').Server;
@@ -47,8 +47,9 @@ module.exports = function(cfg) {
 
   gulp.task('scripts.lint', function() {
     return gulp.src(SCRIPT_SRC_GLOB)
-      .pipe(standard())
-      .pipe(standard.reporter('default', {breakOnError: true}))
+      .pipe(eslint())
+      .pipe(eslint.format('stylish'))
+      .pipe(eslint.failOnError())
     ;
   });
 

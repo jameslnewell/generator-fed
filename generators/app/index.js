@@ -13,6 +13,7 @@ function mergeModule(name) {
 
   //merge the module files with the app files
   this.fs.copy(path.join(__dirname, 'lib', name, 'files'), this.destinationPath('.'));
+  this.fs.copy(path.join(__dirname, 'lib', name, 'files', '.*'), this.destinationPath('.')); //dot files e.g. .eslintrc
 
   if (module) {
 

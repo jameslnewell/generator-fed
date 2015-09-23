@@ -5,7 +5,7 @@ module.exports = function(ctx) {
   //append the static site tasks to the app tasks
   ctx.tasks = extend(ctx.tasks, {
     install:  ['packages.install', 'packages.dedupe'],
-    build:    [['scripts.bundle', 'styles.bundle']],
+    build:    ['scripts.lint', ['scripts.bundle', 'styles.bundle']],
     test:     ['scripts.test'],
     debug:    ['scripts.debug'],
     optimise: [['scripts.optimise', 'styles.optimise', 'images.optimise'], 'cachebust'],
@@ -18,12 +18,13 @@ module.exports = function(ctx) {
     "browserify": "^11.0.1",
     "browserify-istanbul": "^0.2.1",
     "del": "^2.0.1",
+    "eslint-config-jameslnewell": "^0.0.5",
     "finder-on-steroids": "^0.3.2",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.1",
+    "gulp-eslint": "^1.0.0",
     "gulp-imagemin": "^2.2.1",
     "gulp-minify-css": "^1.1.1",
-    "gulp-standard": "^5.1.0",
     "gulp-uglify": "^1.2.0",
     "gulp-rev-all": "^0.8.21",
     "gulp-rev-napkin": "git+https://github.com/mbbender/gulp-rev-napkin.git",
