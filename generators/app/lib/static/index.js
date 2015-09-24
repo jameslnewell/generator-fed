@@ -3,7 +3,7 @@ var extend = require('extend');
 module.exports = function(ctx) {
 
   //append the static site tasks to the app tasks
-  ctx.tasks.build[0].push('content.build');
+  ctx.tasks.build[1].push('content.build');
   ctx.tasks.optimise[0].push('content.optimise');
   ctx.tasks.watch[0].push('content.watch');
 
