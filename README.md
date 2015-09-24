@@ -47,3 +47,9 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - split component specific stuff into a sub-generator and create another sub-generator for static content specific stuff
 - `karma-browserifast` might bundle tests faster?
 - `testem` might be nicer for debugging tests?
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2015 James Newell

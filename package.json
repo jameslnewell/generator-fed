@@ -1,6 +1,6 @@
 {
   "name": "generator-fed",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Yeoman generator for Frontend Development with Browserify and SASS Composer.",
   "files": [
     "generators"
@@ -20,5 +20,6 @@
   "dependencies": {
     "extend": "^3.0.0",
     "yeoman-generator": "^0.20.3"
-  }
+  },
+  "license": "MIT"
 }
