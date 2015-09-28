@@ -2,7 +2,7 @@
 
 ## Installation
 
-    npm i
+    npm install
 
 ## Directory structure
 
