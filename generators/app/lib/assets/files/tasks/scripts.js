@@ -1,6 +1,7 @@
 var path        = require('path');
 var gulp        = require('gulp');
 var del         = require('del');
+var mkdirp      = require('mkdirp');
 var sequence    = require('run-sequence');
 var source      = require('vinyl-source-stream');
 
@@ -77,39 +78,43 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('scripts.test', function(done) {
-    var server = new KarmaServer({
-      configFile: __dirname+'/../karma.conf.js',
-      singleRun:  true,
+    var reportsDirectory = path.resolve(cfg.distdir)+'/reports';
+    mkdirp(reportsDirectory, function(err) {
+      if (err) return done(err);
+      var server = new KarmaServer({
+        configFile: __dirname+'/../karma.conf.js',
+        singleRun:  true,
 
-      reporters:  ['dots', 'bamboo', 'coverage'/*, 'threshold'*/],
-      browsers:   ['PhantomJS'],
+        reporters:  ['dots', 'bamboo', 'coverage'/*, 'threshold'*/],
+        browsers:   ['PhantomJS'],
 
-      browserify: {
-        debug:      true,
-        transform:  ['browserify-istanbul']
-      },
+        browserify: {
+          debug:      true,
+          transform:  ['browserify-istanbul']
+        },
 
-      coverageReporter: {
-        dir: path.resolve(cfg.distdir)+'/coverage',
-        reporters: [
-          {type: 'html'},
-          {type: 'text-summary'}
-        ]
-      },
+        coverageReporter: {
+          dir: reportsDirectory+'/coverage',
+          reporters: [
+            {type: 'html'},
+            {type: 'text-summary'}
+          ]
+        },
 
-      thresholdReporter: {
-        statements: 90,
-        branches:   90,
-        functions:  90,
-        lines:      90
-      },
+        thresholdReporter: {
+          statements: 90,
+          branches:   90,
+          functions:  90,
+          lines:      90
+        },
 
-      bambooReporter:{
-        filename: './dist/mocha.json'
-      }
+        bambooReporter:{
+          filename: reportsDirectory+'/mocha.json'
+        }
 
-    }, done);
-    server.start();
+      }, done);
+      server.start();
+    });
   });
 
   gulp.task('scripts.debug', function(done) {

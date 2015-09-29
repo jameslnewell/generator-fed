@@ -38,6 +38,7 @@ module.exports = function(ctx) {
     "karma-source-map-support": "^1.1.0",
     "karma-threshold-reporter": "^0.1.15",
     "linklocal": "^2.5.2",
+    "mkdirp": "^0.5.1",
     "mocha": "^2.2.5",
     "npm-cmd": "^0.2.0",
     "phantomjs": "^1.9.18",
