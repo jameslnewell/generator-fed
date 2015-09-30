@@ -43,9 +43,8 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - watched with `gulp`
 
 ## TODO:
-- livereload
+- `livereload`/`browsersync`
 - make `karma-threshold-reporter` actually break the build
-- split component specific stuff into a sub-generator and create another sub-generator for static content specific stuff
 - `karma-browserifast` might bundle tests faster?
 - `testem` might be nicer for debugging tests?
 
