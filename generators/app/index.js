@@ -13,7 +13,7 @@ function mergeModule(name) {
 
   //merge the module files with the app files
   this.fs.copy(path.join(__dirname, 'lib', name, 'files'), this.destinationPath('.'));
-  this.fs.copy(path.join(__dirname, 'lib', name, 'files', '.*'), this.destinationPath('.')); //dot files e.g. .eslintrc
+  this.fs.copy(path.join(__dirname, 'lib', name, 'files', '**/.*'), this.destinationPath('.')); //dot files e.g. .eslintrc
 
   if (module) {
 
@@ -56,6 +56,10 @@ module.exports = generators.Base.extend({
     this.dependencies = {
       "del": "^2.0.1",
       "gulp": "^3.9.0",
+      "gulp-imagemin": "^2.2.1",
+      "gulp-rev-all": "^0.8.21",
+      "gulp-rev-napkin": "git+https://github.com/mbbender/gulp-rev-napkin.git",
+      "imagemin-pngquant": "^4.1.0",
       "mkdirp": "^0.5.0",
       "readdir": "^0.0.13",
       "run-sequence": "^1.1.0"
@@ -63,7 +67,7 @@ module.exports = generators.Base.extend({
 
     this.tasks = {
       default:  ['build'],
-      all:      ['clean', 'install', 'build', 'test', 'optimise'],
+      all:      ['clean', 'install', 'build', ['test', 'optimise']],
       install:  [],
       build:    [],
       test:     [],
@@ -95,6 +99,7 @@ module.exports = generators.Base.extend({
 
     this.fs.copy(this.templatePath('_editorconfig'), this.destinationPath('.editorconfig'));
     this.fs.copy(this.templatePath('_gitignore'), this.destinationPath('.gitignore'));
+    this.fs.copy(this.templatePath('_gitattributes'), this.destinationPath('.gitattributes'));
     this.fs.copy(this.templatePath('tasks/**'), this.destinationPath('tasks'));
 
     this.fs.copyTpl(this.templatePath('_gulpfile.js.ejs'), this.destinationPath('gulpfile.js'), {

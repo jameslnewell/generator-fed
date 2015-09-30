@@ -9,7 +9,7 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('images.optimise', function() {
-    return gulp.src(cfg.distdir+'/**/*.{png,jpg,gif,svg}')
+    return gulp.src(['!'+cfg.distdir+'/__reports__/**', cfg.distdir+'/**/*.{png,jpg,gif,svg}'])
       .pipe(imagemin({
         progressive:  true,
         svgoPlugins:  [{removeViewBox: false}],

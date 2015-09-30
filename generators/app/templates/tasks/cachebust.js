@@ -11,9 +11,9 @@ module.exports = function(cfg) {
   gulp.task('cachebust',function() {
 
     var rev = new RevAll({
-      dontGlobal: ['coverage'],
-      dontRenameFile: ['mocha.json', /\.html$/],
-      dontUpdateReference: ['mocha.json', /\.html$/]
+      dontGlobal: [/__reports__\/.*/],
+      dontRenameFile: [/\.html$/],
+      dontUpdateReference: [/\.html$/]
     });
 
     return gulp.src([cfg.distdir+'/**'])
@@ -21,6 +21,8 @@ module.exports = function(cfg) {
       .pipe(rev.revision())
       .pipe(gulp.dest(cfg.distdir))
       .pipe(napkin({verbose: false}))
+      .pipe(rev.manifestFile())
+      .pipe(gulp.dest(cfg.distdir))
     ;
 
   });

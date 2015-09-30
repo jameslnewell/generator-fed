@@ -78,7 +78,7 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('scripts.test', function(done) {
-    var reportsDirectory = path.resolve(cfg.distdir)+'/reports';
+    var reportsDirectory = path.resolve(cfg.distdir)+'/__reports__';
     mkdirp(reportsDirectory, function(err) {
       if (err) return done(err);
       var server = new KarmaServer({
