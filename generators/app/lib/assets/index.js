@@ -18,7 +18,7 @@ module.exports = function(ctx) {
     "browserify": "^11.0.1",
     "browserify-istanbul": "^0.2.1",
     "del": "^2.0.1",
-    "eslint-config-jameslnewell": "^0.0.9",
+    "eslint-config-jameslnewell": "^0.0.10",
     "finder-on-steroids": "^0.3.2",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.1",
