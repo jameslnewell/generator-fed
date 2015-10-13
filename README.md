@@ -9,7 +9,7 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 ## Usage
 
     $ mkdir demo && cd demo
-    $ yo fed [--static] [--install]
+    $ yo fed [--name <name>] [--static] [--install]
 
 ## Features
 - async builds with `gulp`

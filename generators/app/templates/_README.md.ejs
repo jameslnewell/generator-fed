@@ -46,17 +46,21 @@ recorded all your dependencies, formatted your code appropriately and haven't ca
 
 Bundles the styles and scripts.
 
-    gulp
+    gulp [--debug]
 
 If you're not using the `watch` task you'll probably want to use this task whenever you change the code.
+
+Use the `--debug` switch to allow the `debugger` and `console.log` statements whilst you're debugging.
 
 #### watch
 
 Listens for changes to your style, script and package.json files and bundles/installs them when they change.
 
-    gulp watch
+    gulp watch [--debug]
 
 You'll want to use this whenever you're making changes to the code.
+
+Use the `--debug` switch to allow the `debugger` and `console.log` statements whilst you're debugging.
 
 #### clean
 

@@ -34,6 +34,13 @@ module.exports = function(cfg) {
     entries:  SCRIPT_SRC_FILE
   };
 
+  var SCRIPT_LINT_OPTIONS = null;
+  if (process.argv.indexOf('--debug') !== -1) {
+    SCRIPT_LINT_OPTIONS = {
+      configFile: "jameslnewell/debug"
+    };
+  }
+
   /*==================================
    * Clean scripts
    *==================================*/
@@ -48,7 +55,7 @@ module.exports = function(cfg) {
 
   gulp.task('scripts.lint', function() {
     return gulp.src(SCRIPT_SRC_GLOB)
-      .pipe(eslint())
+      .pipe(eslint(SCRIPT_LINT_OPTIONS))
       .pipe(eslint.format('stylish'))
       .pipe(eslint.failOnError())
     ;
