@@ -40,7 +40,7 @@ module.exports = function(ctx) {
     "phantomjs": "^1.9.18",
     "queue": "^3.1.0",
     "run-sequence": "^1.1.0",
-    "sass-composer": "2.0.0-beta7",
+    "sass-composer": "2.0.0-beta8",
     "uglify-js": "^2.4.20",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
