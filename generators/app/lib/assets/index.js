@@ -15,7 +15,7 @@ module.exports = function(ctx) {
   //append the component dependencies to the app dependencies
   ctx.dependencies = extend(ctx.dependencies, {
     "autoprefixer": "^6.0.2",
-    "browserify": "^11.0.1",
+    "browserify": "^12.0.1",
     "browserify-istanbul": "^0.2.1",
     "del": "^2.0.1",
     "eslint-config-jameslnewell": "^0.0.13",
@@ -41,7 +41,6 @@ module.exports = function(ctx) {
     "queue": "^3.1.0",
     "run-sequence": "^1.1.0",
     "sass-composer": "2.0.0-beta8",
-    "uglify-js": "^2.4.20",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   });
