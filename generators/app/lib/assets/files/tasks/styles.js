@@ -1,4 +1,5 @@
 var gulp        = require('gulp');
+var logger      = require('gulp-util');
 var prefixer    = require('gulp-autoprefixer');
 var minify      = require('gulp-minify-css');
 var buffer      = require('vinyl-buffer');
@@ -6,6 +7,7 @@ var source      = require('vinyl-source-stream');
 var del         = require('del');
 var sequence    = require('run-sequence');
 var composer    = require('sass-composer');
+var watcher     = require('sass-composer/lib/watcher');
 
 module.exports = function(cfg) {
 
@@ -27,6 +29,39 @@ module.exports = function(cfg) {
     STYLE_SRC_DIR+'/*.scss', STYLE_SRC_DIR+'/**/*.scss' //include our styles
   ];
 
+  /**
+   * Create the bundler
+   * @param   {boolean}     [watch]
+   * @returns {composer}
+   */
+  function createBundler(watch) {
+    var bundler;
+
+    if (watch) {
+      bundler = watcher(STYLE_OPTIONS);
+    } else {
+      bundler = composer(STYLE_OPTIONS);
+    }
+
+    return bundler;
+  }
+
+  /**
+   * Perform the bunlding
+   * @param   {composer}    bundler
+   * @param   {object}      options
+   * @returns {stream}
+   */
+  function createBundle(bundler, options) {
+    options = options || {}; //TODO: handle errors
+    return bundler.compose()
+      .pipe(source('bundled.css'))
+      .pipe(buffer())
+      .pipe(prefixer({browsers: ['last 2 versions']}))
+      .pipe(gulp.dest(STYLE_BUILD_DIR))
+    ;
+  }
+
   /*==================================
    * Clean styles
    *==================================*/
@@ -40,12 +75,7 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('styles.bundle', function() {
-    return composer(STYLE_OPTIONS).compose()
-      .pipe(source('bundled.css'))
-      .pipe(buffer())
-      .pipe(prefixer({browsers: ['last 2 versions']}))
-      .pipe(gulp.dest(STYLE_BUILD_DIR))
-    ;
+    return createBundle(createBundler());
   });
 
   /*==================================
@@ -53,7 +83,23 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('styles.watch', function() {
-    gulp.watch(STYLE_SRC_GLOB, ['styles.bundle']);
+    var startTime = 0;
+    var bundler = createBundler(true);
+
+    bundler.on('change', function() {
+      logger.log('bundling styles...');
+      startTime = Date.now();
+      return createBundle(bundler).on('finish', function() {
+        var totalTime=Date.now()-startTime;
+        logger.log('bundled stlyes in '+(totalTime/1000)+'s');
+      });
+    });
+
+    startTime = Date.now();
+    return createBundle(bundler).on('finish', function() {
+      var totalTime=Date.now()-startTime;
+      logger.log('bundled stlyes in '+(totalTime/1000)+'s');
+    });
   });
 
   /*==================================

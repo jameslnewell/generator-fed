@@ -5,8 +5,11 @@ var mkdirp      = require('mkdirp');
 var sequence    = require('run-sequence');
 var source      = require('vinyl-source-stream');
 
+var logger      = require('gulp-util');
 var eslint      = require('gulp-eslint');
 var browserify  = require('browserify');
+var incremental = require('browserify-incremental');
+var watchify    = require('watchify');
 var uglify      = require('gulp-uglify');
 var KarmaServer = require('karma').Server;
 
@@ -41,6 +44,45 @@ module.exports = function(cfg) {
     };
   }
 
+  /**
+   * Create the bundler
+   * @param   {boolean}     [watch]
+   * @returns {browserify}
+   */
+  function createBundler(watch) {
+    var config;
+
+    if (watch) {
+      config = Object.assign({}, watchify.args, SCRIPT_OPTIONS);
+    } else {
+      config = Object.assign({}, incremental.args, SCRIPT_OPTIONS);
+    }
+
+    var bundler = browserify(config);
+
+    if (watch) {
+      bundler = watchify(bundler);
+    } else {
+      bundler = incremental(bundler, {cacheFile: './browserify-cache.json'}); //TODO: move this somewhere else?
+    }
+
+    return bundler;
+  }
+
+  /**
+   * Perform the bunlding
+   * @param   {browserify}  bundler
+   * @param   {object}      options
+   * @returns {stream}
+   */
+  function createBundle(bundler, options) {
+    options = options || {}; //TODO: handle errors
+    return bundler.bundle()
+      .pipe(source('bundled.js'))
+      .pipe(gulp.dest(SCRIPT_BUILD_DIR))
+    ;
+  }
+
   /*==================================
    * Clean scripts
    *==================================*/
@@ -53,23 +95,30 @@ module.exports = function(cfg) {
    * Lint scripts
    *==================================*/
 
-  gulp.task('scripts.lint', function() {
+  function lint() {
+    return gulp.src(SCRIPT_SRC_GLOB)
+      .pipe(eslint(SCRIPT_LINT_OPTIONS))
+      .pipe(eslint.format('stylish'))
+    ;
+  }
+
+  function lintAndFail() {
     return gulp.src(SCRIPT_SRC_GLOB)
       .pipe(eslint(SCRIPT_LINT_OPTIONS))
       .pipe(eslint.format('stylish'))
       .pipe(eslint.failOnError())
     ;
-  });
+  }
+
+  gulp.task('scripts.lint', lint);
+  gulp.task('scripts.lintAndFail', lintAndFail);
 
   /*==================================
    * Bundle scripts
    *==================================*/
 
   gulp.task('scripts.bundle', function() {
-    return browserify(SCRIPT_OPTIONS).bundle()
-      .pipe(source('bundled.js'))
-      .pipe(gulp.dest(SCRIPT_BUILD_DIR))
-    ;
+    return createBundle(createBundler());
   });
 
   /*==================================
@@ -77,7 +126,22 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('scripts.watch', function() {
-    gulp.watch(SCRIPT_SRC_GLOB, ['scripts.lint', 'scripts.bundle']);
+    var bundler = createBundler(true);
+
+    bundler.on('update', function() {
+      logger.log('bundling scripts...');
+      return sequence('scripts.lint', function() {
+        return createBundle(bundler)
+      });
+    });
+
+    bundler.on('time', function(time) {
+      logger.log('bundled scripts in '+(time/1000)+'s');
+    });
+
+    return sequence('scripts.lint', function() {
+      return createBundle(bundler)
+    });
   });
 
   /*==================================

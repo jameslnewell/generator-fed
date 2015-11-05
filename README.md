@@ -21,14 +21,14 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - minified with `uglify`
 - tested with `karma-mocha`
 - test coverage with `istanbul`
-- watched with `gulp`
+- watched with `watchify`
 
 ### Styles
 - dependencies from `npm`
 - bundled with `sass-composer`
 - prefixed with `autoprefixer`
 - minified with `clean-css`
-- watched with `gulp`
+- watched with `sass-composer`
 
 ### Images
 - urls rewritten and copied to the build dir with `sass-composer`
