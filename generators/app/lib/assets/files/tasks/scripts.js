@@ -58,7 +58,17 @@ module.exports = function(cfg) {
       config = Object.assign({}, incremental.args, SCRIPT_OPTIONS);
     }
 
-    var bundler = browserify(config);
+    var bundler = browserify(config)
+
+      //replace process.env.NODE_ENV with the actual value,
+      // so that uglify can strip dead code in production
+      .transform('envify', {
+        _: 'purge',
+        global: true,
+        NODE_ENV: 'production'
+      })
+
+    ;
 
     if (watch) {
       bundler = watchify(bundler);
