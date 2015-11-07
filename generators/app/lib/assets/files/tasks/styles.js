@@ -49,7 +49,7 @@ module.exports = function(cfg) {
   /**
    * Perform the bunlding
    * @param   {composer}    bundler
-   * @param   {object}      options
+   * @param   {object}      [options]
    * @returns {stream}
    */
   function createBundle(bundler, options) {
@@ -61,14 +61,6 @@ module.exports = function(cfg) {
       .pipe(gulp.dest(STYLE_BUILD_DIR))
     ;
   }
-
-  /*==================================
-   * Clean styles
-   *==================================*/
-
-  gulp.task('styles.clean', function() {
-    return del(['bundled.css', 'node_modules/'], {cwd: cfg.distdir});
-  });
 
   /*==================================
    * Bundle styles

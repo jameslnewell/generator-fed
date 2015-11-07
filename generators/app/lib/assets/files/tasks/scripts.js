@@ -31,14 +31,10 @@ module.exports = function(cfg) {
     SCRIPT_SRC_DIR+'/**/test/**/*.js' //include our scripts
   ];
 
-  var SCRIPT_OPTIONS = {
-    debug:    true,
-    bare:     true,
-    entries:  SCRIPT_SRC_FILE
-  };
-
   var SCRIPT_LINT_OPTIONS = null;
-  if (process.argv.indexOf('--debug') !== -1) {
+
+  //in development: allow `console`, `debugger` and other statements for debugging purposes
+  if (!cfg.production) {
     SCRIPT_LINT_OPTIONS = {
       configFile: 'jameslnewell/debug'
     };
@@ -50,30 +46,39 @@ module.exports = function(cfg) {
    * @returns {browserify}
    */
   function createBundler(watch) {
-    var config;
+    var config = {
+      debug:    !cfg.production,
+      entries:  SCRIPT_SRC_FILE
+    };
 
     if (watch) {
-      config = Object.assign({}, watchify.args, SCRIPT_OPTIONS);
-    } else {
-      config = Object.assign({}, incremental.args, SCRIPT_OPTIONS);
+      config = Object.assign({}, watchify.args, config);
+    } else if (!cfg.production) {
+
+      //in development: use incremental builds to make them faster
+      config = Object.assign({}, incremental.args, config);
+
     }
 
-    var bundler = browserify(config)
+    var bundler = browserify(config);
 
-      //replace process.env.NODE_ENV with the actual value,
-      // so that uglify can strip dead code in production
-      .transform('envify', {
-        _: 'purge',
+    //in production: replace process.env.NODE_ENV with the actual value,
+    // so that uglify can strip dead code in production
+    if (cfg.production) {
+      bundler.transform('envify', {
         global: true,
+        _: 'purge',
         NODE_ENV: 'production'
-      })
-
-    ;
+      });
+    }
 
     if (watch) {
       bundler = watchify(bundler);
-    } else {
-      bundler = incremental(bundler, {cacheFile: './browserify-cache.json'}); //TODO: move this somewhere else?
+    } else if (!cfg.production) {
+
+      //in development: use incremental builds to make them faster
+      bundler = incremental(bundler, {cacheFile: './dist/.browserify-cache'});
+
     }
 
     return bundler;
@@ -82,7 +87,7 @@ module.exports = function(cfg) {
   /**
    * Perform the bunlding
    * @param   {browserify}  bundler
-   * @param   {object}      options
+   * @param   {object}      [options]
    * @returns {stream}
    */
   function createBundle(bundler, options) {
@@ -92,14 +97,6 @@ module.exports = function(cfg) {
       .pipe(gulp.dest(SCRIPT_BUILD_DIR))
     ;
   }
-
-  /*==================================
-   * Clean scripts
-   *==================================*/
-
-  gulp.task('scripts.clean', function() {
-    return del(['bundled.js', 'coverage/', 'mocha.json'], {cwd: cfg.distdir});
-  });
 
   /*==================================
    * Lint scripts

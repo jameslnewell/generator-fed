@@ -1,7 +1,6 @@
-.idea
-dist/
-node_modules/
-.DS_Store
 Thumbs.db
+.DS_Store
+.idea
 npm-debug.log
-browserify-cache.json
+node_modules/
+dist/

@@ -4,6 +4,7 @@ var readdir     = require('readdir');
 var sequence    = require('run-sequence');
 
 var cfg = {
+  production: process.argv.indexOf('all') !== -1,
   srcdir: './src',
   distdir: './dist'
 };

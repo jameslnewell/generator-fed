@@ -8,10 +8,10 @@ module.exports = function(cfg) {
    * Clean
    *==================================*/
 
-  gulp.task('clean', function() {
-    return del(['*'], {cwd: cfg.distdir})
+  gulp.task('clean', function(cb) {
+    del(['*', '.*'], {cwd: cfg.distdir})
       .then(function() {
-        mkdirp(cfg.distdir); //TODO: promisify
+        mkdirp(cfg.distdir, cb);
       })
     ;
   });
