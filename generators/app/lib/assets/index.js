@@ -5,7 +5,7 @@ module.exports = function(ctx) {
   //append the static site tasks to the app tasks
   ctx.tasks = extend(ctx.tasks, {
     install:  ['packages.install', 'packages.dedupe'],
-    build:    ['scripts.lintAndFail', ['scripts.bundle', 'styles.bundle', 'content.build']],
+    build:    ['scripts.lint', ['scripts.bundle', 'styles.bundle', 'content.build']],
     test:     ['scripts.test'],
     debug:    ['scripts.debug'],
     optimise: [['scripts.optimise', 'styles.optimise', 'images.optimise'], 'cachebust'],

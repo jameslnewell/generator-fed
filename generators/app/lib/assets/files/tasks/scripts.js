@@ -40,7 +40,7 @@ module.exports = function(cfg) {
   var SCRIPT_LINT_OPTIONS = null;
   if (process.argv.indexOf('--debug') !== -1) {
     SCRIPT_LINT_OPTIONS = {
-      configFile: "jameslnewell/debug"
+      configFile: 'jameslnewell/debug'
     };
   }
 
@@ -105,23 +105,20 @@ module.exports = function(cfg) {
    * Lint scripts
    *==================================*/
 
-  function lint() {
+  gulp.task('scripts.lint', function() {
     return gulp.src(SCRIPT_SRC_GLOB)
       .pipe(eslint(SCRIPT_LINT_OPTIONS))
-      .pipe(eslint.format('stylish'))
-    ;
-  }
-
-  function lintAndFail() {
-    return gulp.src(SCRIPT_SRC_GLOB)
-      .pipe(eslint(SCRIPT_LINT_OPTIONS))
-      .pipe(eslint.format('stylish'))
+      .pipe(eslint.formatEach('stylish'))
       .pipe(eslint.failOnError())
     ;
-  }
+  });
 
-  gulp.task('scripts.lint', lint);
-  gulp.task('scripts.lintAndFail', lintAndFail);
+  gulp.task('scripts.lintAndIgnoreErrors', function() {
+    return gulp.src(SCRIPT_SRC_GLOB)
+      .pipe(eslint(SCRIPT_LINT_OPTIONS))
+      .pipe(eslint.formatEach('stylish'))
+    ;
+  });
 
   /*==================================
    * Bundle scripts
@@ -139,8 +136,8 @@ module.exports = function(cfg) {
     var bundler = createBundler(true);
 
     bundler.on('update', function() {
-      logger.log('bundling scripts...');
-      return sequence('scripts.lint', function() {
+      return sequence('scripts.lintAndIgnoreErrors', function() {
+        logger.log('bundling scripts...');
         return createBundle(bundler)
       });
     });
@@ -149,8 +146,9 @@ module.exports = function(cfg) {
       logger.log('bundled scripts in '+(time/1000)+'s');
     });
 
-    return sequence('scripts.lint', function() {
-      return createBundle(bundler)
+    return sequence('scripts.lintAndIgnoreErrors', function() {
+      logger.log('bundling scripts...');
+      return createBundle(bundler);
     });
   });
 

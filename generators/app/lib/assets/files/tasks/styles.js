@@ -95,6 +95,7 @@ module.exports = function(cfg) {
       });
     });
 
+    logger.log('bundling styles...');
     startTime = Date.now();
     return createBundle(bundler).on('finish', function() {
       var totalTime=Date.now()-startTime;
