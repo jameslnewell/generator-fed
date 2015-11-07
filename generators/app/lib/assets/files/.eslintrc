@@ -1,8 +1,4 @@
 {
   "root": true,
-  "env": {
-    "browser": true,
-    "mocha": true
-  },
-  "extends": "jameslnewell/es5"
+  "extends": "jameslnewell"
 }
