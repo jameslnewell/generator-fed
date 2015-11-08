@@ -51,7 +51,39 @@ module.exports = generators.Base.extend({
       defaults: false
     });
 
+    // --- language features ---
+
+    this.option('es5', {
+      type:     Boolean,
+      desc:     'Whether use ES5',
+      defaults: false
+    });
+
+    this.option('es6', {
+      type:     Boolean,
+      desc:     'Whether use ES5',
+      defaults: false
+    });
+
+    this.option('react', {
+      type:     Boolean,
+      desc:     'Whether use ES6+JSX',
+      defaults: false
+    });
+
     this.name = this.options.name || path.basename(path.resolve('.')).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/--/g, '-');
+
+    if ((this.options.es5 && this.options.es6) || (this.options.es5 && this.options.react) || (this.options.es6 && this.options.react)) {
+      this.env.error('Please choose only one of --es5, --es6 and --react.');
+    } else {
+      if (this.options.es6) {
+        this.lang = 'es6';
+      } else if (this.options.react) {
+        this.lang = 'react';
+      } else {
+        this.lang = 'es5';
+      }
+    }
 
     this.dependencies = {
       "del": "^2.0.1",
@@ -102,14 +134,18 @@ module.exports = generators.Base.extend({
     this.fs.copy(this.templatePath('_gitattributes'), this.destinationPath('.gitattributes'));
     this.fs.copy(this.templatePath('tasks/**'), this.destinationPath('tasks'));
 
+    this.fs.copyTpl(this.templatePath('_eslintrc.ejs'), this.destinationPath('.eslintrc'), {
+      lang: this.lang
+    });
+
     this.fs.copyTpl(this.templatePath('_gulpfile.js.ejs'), this.destinationPath('gulpfile.js'), {
-      name:   this.name,
-      tasks:  this.tasks
+      name: this.name,
+      tasks: this.tasks
     });
 
     this.fs.copyTpl(this.templatePath('_package.json.ejs'), this.destinationPath('package.json'), {
-      name:         this.name,
-      dependencies: this.dependencies
+      name: this.name,
+      dependencies: this.buildDependencies
     });
 
     this.fs.copyTpl(this.templatePath('_README.md.ejs'), this.destinationPath('README.md'), {

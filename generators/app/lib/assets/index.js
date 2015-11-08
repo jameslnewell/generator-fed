@@ -20,7 +20,7 @@ module.exports = function(ctx) {
     "browserify-istanbul": "^0.2.1",
     "del": "^2.0.1",
     "envify": "^3.4.0",
-    "eslint-config-jameslnewell": "^0.0.13",
+    "eslint-config-jameslnewell": "jameslnewell/eslint-config-jameslnewell",
     "finder-on-steroids": "^0.3.2",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.1",
