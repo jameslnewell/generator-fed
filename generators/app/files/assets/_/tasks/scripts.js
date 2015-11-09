@@ -165,26 +165,32 @@ module.exports = function(cfg) {
   /*==================================
    * Test scripts
    *==================================*/
-
+  var isparta = require('isparta');
   gulp.task('scripts.test', function(done) {
-    var reportsDirectory = path.resolve(cfg.distdir)+'/__reports__';
+    var reportsDirectory = path.resolve(cfg.distdir) + '/__reports__';
     mkdirp(reportsDirectory, function(err) {
       if (err) return done(err);
       var server = new KarmaServer({
 
         configFile: __dirname+'/../karma.conf.js',
-        singleRun:  true,
+        singleRun: true,
 
-        reporters:  ['dots', 'bamboo', 'coverage'/*, 'threshold'*/],
-        browsers:   ['PhantomJS'],
+        reporters: ['dots', 'bamboo', 'coverage'/*, 'threshold'*/],
+        browsers: ['PhantomJS'],
 
         browserify: {
-          debug:      true,
-          transform:  package.browserify.transform.concat(['browserify-istanbul'])
+          debug: true,
+          transform: package.browserify.transform.concat([[
+            'browserify-istanbul',
+            {
+              instrumenter: isparta
+            }
+          ]])
         },
 
-        coverageReporter: {
-          dir: reportsDirectory+'/coverage',
+        coverageReporter: { //TODO: coverage is incorrect for ES5 generated from ES6 - use isparta
+
+          dir: reportsDirectory + '/coverage',
           reporters: [
             {type: 'html'},
             {type: 'text-summary'}
@@ -193,13 +199,13 @@ module.exports = function(cfg) {
 
         thresholdReporter: {
           statements: 90,
-          branches:   90,
-          functions:  90,
-          lines:      90
+          branches: 90,
+          functions: 90,
+          lines: 90
         },
 
-        bambooReporter:{
-          filename: reportsDirectory+'/mocha.json'
+        bambooReporter: {
+          filename: reportsDirectory + '/mocha.json'
         }
 
       }, done);

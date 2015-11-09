@@ -9,6 +9,7 @@ module.exports = generators.Base.extend({
 
   /**
    * Construct the generator
+   * @constructor
    */
   constructor: function() {
     generators.Base.apply(this, arguments);
@@ -16,40 +17,40 @@ module.exports = generators.Base.extend({
     // --- generic options ---
 
     this.option('name', {
-      type:     String,
-      desc:     'The name of the project',
+      type: String,
+      desc: 'The name of the project',
       defaults: path.basename(path.resolve('.')).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/--/g, '-')
     });
 
     this.option('static', {
-      type:     Boolean,
-      desc:     'Whether to include static site generation',
+      type: Boolean,
+      desc: 'Whether to include static site generation',
       defaults: false
     });
 
     this.option('install', {
-      type:     Boolean,
-      desc:     'Whether to install npm dependencies',
+      type: Boolean,
+      desc: 'Whether to install npm dependencies',
       defaults: false
     });
 
     // --- language options ---
 
     this.option('es5', {
-      type:     Boolean,
-      desc:     'Whether use ES5',
+      type: Boolean,
+      desc: 'Whether use ES5',
       defaults: false
     });
 
     this.option('es6', {
-      type:     Boolean,
-      desc:     'Whether use ES5',
+      type: Boolean,
+      desc: 'Whether use ES5',
       defaults: false
     });
 
     this.option('react', {
-      type:     Boolean,
-      desc:     'Whether use ES6+JSX',
+      type: Boolean,
+      desc: 'Whether use ES6+JSX',
       defaults: false
     });
 
@@ -57,6 +58,7 @@ module.exports = generators.Base.extend({
 
   /**
    * Setup the project static content
+   * @returns {void}
    */
   static: function() {
     //if (this.options.static) {
@@ -66,6 +68,7 @@ module.exports = generators.Base.extend({
 
   /**
    * Setup the base project files
+   * @returns {void}
    */
   base: function() {
 
@@ -92,6 +95,7 @@ module.exports = generators.Base.extend({
     config = assets(config);
     config = core(config);
 console.log(config.tasks);
+
     //copy files
     for (var i=0; i<config.files.length; ++i) {
       var file = config.files[i];
@@ -101,13 +105,18 @@ console.log(config.tasks);
     //copy templates
     for (var j=0; j<config.templates.length; ++j) {
       var template = config.templates[j];
-      this.fs.copyTpl(path.join(__dirname, 'templates', template.src), this.destinationPath(template.dest), template.data);
+      this.fs.copyTpl(
+        path.join(__dirname, 'templates', template.src),
+        this.destinationPath(template.dest),
+        template.data
+      );
     }
 
   },
 
   /**
    * Install the dependencies
+   * @returns {void}
    */
   install: function() {
     if (this.options.install) {
