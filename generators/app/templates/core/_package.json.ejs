@@ -5,5 +5,8 @@
     <%- Object.keys(dependencies).sort().map(function(name) {
       return '"'+name+'": "'+dependencies[name]+'"';
     }).join(',\n    '); %>
+  },
+  "browserify": {
+    "transform": <%- JSON.stringify(transforms); %>
   }
 }

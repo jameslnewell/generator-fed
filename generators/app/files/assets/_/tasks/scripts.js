@@ -13,6 +13,8 @@ var watchify    = require('watchify');
 var uglify      = require('gulp-uglify');
 var KarmaServer = require('karma').Server;
 
+var package = require('../package.json');
+
 module.exports = function(cfg) {
 
   var SCRIPT_SRC_DIR = cfg.srcdir+'/assets';
@@ -69,6 +71,17 @@ module.exports = function(cfg) {
         global: true,
         _: 'purge',
         NODE_ENV: 'production'
+      });
+    }
+
+    //apply transforms from browserify.transform in package.json
+    if (package && package.browserify && package.browserify.transform) {
+      package.browserify.transform.forEach(function(transform) {
+        if (Array.isArray(transform)) {
+          bundler.transform.call(bundler, transform[0], transform[1]);
+        } else {
+          bundler.transform(transform);
+        }
       });
     }
 
@@ -158,6 +171,7 @@ module.exports = function(cfg) {
     mkdirp(reportsDirectory, function(err) {
       if (err) return done(err);
       var server = new KarmaServer({
+
         configFile: __dirname+'/../karma.conf.js',
         singleRun:  true,
 
@@ -166,7 +180,7 @@ module.exports = function(cfg) {
 
         browserify: {
           debug:      true,
-          transform:  ['browserify-istanbul']
+          transform:  package.browserify.transform.concat(['browserify-istanbul'])
         },
 
         coverageReporter: {
@@ -195,8 +209,15 @@ module.exports = function(cfg) {
 
   gulp.task('scripts.debug', function(done) {
     var server = new KarmaServer({
+
       configFile: __dirname+'/../karma.conf.js',
-      singleRun:  false
+      singleRun:  false,
+
+      browserify: {
+        debug:      true,
+        transform:  package.browserify.transform.concat(['browserify-istanbul'])
+      }
+
     }, done);
     server.start();
   });
