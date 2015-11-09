@@ -165,7 +165,10 @@ module.exports = function(cfg) {
   /*==================================
    * Test scripts
    *==================================*/
+
+  var istanbul = require('browserify-istanbul');
   var isparta = require('isparta');
+
   gulp.task('scripts.test', function(done) {
     var reportsDirectory = path.resolve(cfg.distdir) + '/__reports__';
     mkdirp(reportsDirectory, function(err) {
@@ -180,12 +183,10 @@ module.exports = function(cfg) {
 
         browserify: {
           debug: true,
-          transform: package.browserify.transform.concat([[
-            'browserify-istanbul',
-            {
-              instrumenter: isparta
-            }
-          ]])
+          transform: package.browserify.transform.concat([istanbul({
+            instrumenter: isparta,
+            ignore: ['**/node_modules/**', '**/test/**'] //https://github.com/jakemmarsh/angularjs-gulp-browserify-boilerplate/pull/29/files
+          })])
         },
 
         coverageReporter: { //TODO: coverage is incorrect for ES5 generated from ES6 - use isparta
