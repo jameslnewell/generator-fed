@@ -1,9 +1,9 @@
-var gulp        = require('gulp');
+var gulp = require('gulp');
 
 module.exports = function(cfg) {
 
   var CONTENT_SRC_DIR = cfg.srcdir + '/content';
-  var CONTENT_SRC_GLOB = [CONTENT_SRC_DIR+'/**/*'];
+  var CONTENT_SRC_GLOB = [CONTENT_SRC_DIR + '/**/*'];
 
   /*==================================
    * Build content

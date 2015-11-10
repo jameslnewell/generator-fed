@@ -1,9 +1,14 @@
 {
   "name": "<%= name %>",
   "private": true,
+  "dependencies": {
+  <%- Object.keys(dependencies).sort().map(function(name) {
+    return '"'+name+'": "'+dependencies[name]+'"';
+  }).join(',\n    '); %>
+  },
   "devDependencies": {
-    <%- Object.keys(dependencies).sort().map(function(name) {
-      return '"'+name+'": "'+dependencies[name]+'"';
+    <%- Object.keys(devDependencies).sort().map(function(name) {
+      return '"'+name+'": "'+devDependencies[name]+'"';
     }).join(',\n    '); %>
   },
   "browserify": {

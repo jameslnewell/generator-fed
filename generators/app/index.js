@@ -19,7 +19,10 @@ module.exports = generators.Base.extend({
     this.option('name', {
       type: String,
       desc: 'The name of the project',
-      defaults: path.basename(path.resolve('.')).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/--/g, '-')
+      defaults: path.basename(path.resolve('.'))
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '-')
+        .replace(/--/g, '-')
     });
 
     this.option('static', {
@@ -57,32 +60,22 @@ module.exports = generators.Base.extend({
   },
 
   /**
-   * Setup the project static content
-   * @returns {void}
-   */
-  static: function() {
-    //if (this.options.static) {
-    //  mergeModule.call(this, 'static');
-    //}
-  },
-
-  /**
    * Setup the base project files
    * @returns {void}
    */
   base: function() {
 
-    var lang;
-    if ((this.options.es5 && this.options.es6) || (this.options.es5 && this.options.react) || (this.options.es6 && this.options.react)) {
+    var lang = 'es5';
+    if (
+      this.options.es5 && this.options.es6
+      || this.options.es5 && this.options.react
+      || this.options.es6 && this.options.react
+    ) {
       this.env.error('Please choose only one of --es5, --es6 and --react.');
-    } else {
-      if (this.options.es6) {
-        lang = 'es6';
-      } else if (this.options.react) {
-        lang = 'react';
-      } else {
-        lang = 'es5';
-      }
+    } else if (this.options.es6) {
+      lang = 'es6';
+    } else if (this.options.react) {
+      lang = 'react';
     }
 
     //get the default config
@@ -96,13 +89,13 @@ module.exports = generators.Base.extend({
     config = core(config);
 
     //copy files
-    for (var i=0; i<config.files.length; ++i) {
+    for (var i = 0; i < config.files.length; ++i) {
       var file = config.files[i];
       this.fs.copy(path.join(__dirname, 'files', file.src), this.destinationPath(file.dest));
     }
 
     //copy templates
-    for (var j=0; j<config.templates.length; ++j) {
+    for (var j = 0; j < config.templates.length; ++j) {
       var template = config.templates[j];
       this.fs.copyTpl(
         path.join(__dirname, 'templates', template.src),

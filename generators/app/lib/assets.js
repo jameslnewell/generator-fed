@@ -7,6 +7,10 @@
 module.exports = function(config) {
   var configWithAssets = Object.assign({}, config);
 
+  configWithAssets.devDependencies = Object.assign({}, config.buildDependencies, {
+    'phantomjs-polyfill': '0.0.1'
+  });
+
   configWithAssets.buildDependencies = Object.assign({}, config.buildDependencies, {
     'autoprefixer': '^6.0.2',
     'browserify': '^12.0.1',
@@ -44,7 +48,6 @@ module.exports = function(config) {
   });
 
   configWithAssets.tasks = Object.assign({}, config.tasks, {
-    install: ['packages.install', 'packages.dedupe'],
     build: ['scripts.lint', ['scripts.bundle', 'styles.bundle', 'content.build']],
     test: ['scripts.test'],
     debug: ['scripts.debug'],
@@ -74,6 +77,11 @@ module.exports = function(config) {
           plugins: ['transform-object-rest-spread']
         }]
       ]);
+
+      configWithAssets.dependencies = Object.assign({}, configWithAssets.dependencies, {
+        'react': '^0.14.2',
+        'react-dom': '^0.14.2'
+      });
 
       configWithAssets.buildDependencies = Object.assign({}, configWithAssets.buildDependencies, {
         'babelify': '^7.2.0',
@@ -108,12 +116,6 @@ module.exports = function(config) {
     });
 
   }
-
-  configWithAssets.templates = config.templates.concat([
-    {src: 'assets/src/assets/_package.json.ejs', dest: './src/assets/package.json', data: {
-      name: configWithAssets.name
-    }}
-  ]);
 
   return configWithAssets;
 };

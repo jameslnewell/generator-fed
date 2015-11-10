@@ -29,8 +29,8 @@ module.exports = function(config) {
   ]);
 
   configWithCore.tasks = Object.assign({}, config.tasks, {
-    default:  ['build'],
-    all:      ['clean', 'install', 'build', ['test', 'optimise']],
+    default: ['build'],
+    all: ['clean', 'build', ['test', 'optimise']]
   });
 
   configWithCore.files = config.files.concat([
@@ -52,7 +52,12 @@ module.exports = function(config) {
     }},
     {src: 'core/_package.json.ejs', dest: 'package.json', data: {
       name: configWithCore.name,
-      dependencies: configWithCore.buildDependencies,
+      dependencies: configWithCore.dependencies,
+      devDependencies: Object.assign(
+        {},
+        configWithCore.buildDependencies,
+        configWithCore.devDependencies
+      ),
       transforms: configWithCore.transforms
     }},
     {src: 'core/_README.md.ejs', dest: 'README.md', data: {

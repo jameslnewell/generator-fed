@@ -21,9 +21,12 @@
     "extend": "^3.0.0",
     "yeoman-generator": "^0.21.1"
   },
-  "license": "MIT",
   "devDependencies": {
     "eslint": "^1.9.0",
     "eslint-config-jameslnewell": "jameslnewell/eslint-config-jameslnewell"
-  }
+  },
+  "scripts": {
+    "lint": "eslint generators/**/*.js generators/**/*.*.js generators/**/_/**/*.js"
+  },
+  "license": "MIT"
 }

@@ -1,32 +1,37 @@
-var gulp        = require('gulp');
-var logger      = require('gulp-util');
-var prefixer    = require('gulp-autoprefixer');
-var minify      = require('gulp-minify-css');
-var buffer      = require('vinyl-buffer');
-var source      = require('vinyl-source-stream');
-var del         = require('del');
-var sequence    = require('run-sequence');
-var composer    = require('sass-composer');
-var watcher     = require('sass-composer/lib/watcher');
+var gulp = require('gulp');
+var logger = require('gulp-util');
+var prefixer = require('gulp-autoprefixer');
+var minify = require('gulp-minify-css');
+var buffer = require('vinyl-buffer');
+var source = require('vinyl-source-stream');
+var composer = require('sass-composer');
+var watcher = require('sass-composer/lib/watcher');
 
 module.exports = function(cfg) {
 
-  var STYLE_SRC_DIR = cfg.srcdir+'/assets';
+  var STYLE_SRC_DIR = cfg.srcdir + '/assets';
   var STYLE_BUILD_DIR = cfg.distdir;
 
-  var STYLE_SRC_FILE = STYLE_SRC_DIR+'/index.scss';
-  var STYLE_BUILD_FILE = STYLE_BUILD_DIR+'/bundled.css';
+  var STYLE_SRC_FILE = STYLE_SRC_DIR + '/index.scss';
+  var STYLE_BUILD_FILE = STYLE_BUILD_DIR + '/bundled.css';
 
   var STYLE_OPTIONS = {
-    entry:    STYLE_SRC_FILE,
-    plugins:  [composer.plugins.url({dir: STYLE_BUILD_DIR, copy: true})]
+    entry: STYLE_SRC_FILE,
+    plugins: [composer.plugins.url({dir: STYLE_BUILD_DIR, copy: true})]
   };
 
   var STYLE_SRC_GLOB = [
-    '!'+STYLE_SRC_DIR+'/node_modules/**/*.css', '!'+STYLE_SRC_DIR+'/**/node_modules/**/*.css', //ignore styles from node_modules
-    '!'+STYLE_SRC_DIR+'/node_modules/**/*.scss', '!'+STYLE_SRC_DIR+'/**/node_modules/**/*.scss', //ignore styles from node_modules
-    STYLE_SRC_DIR+'/*.css', STYLE_SRC_DIR+'/**/*.css', //include our styles
-    STYLE_SRC_DIR+'/*.scss', STYLE_SRC_DIR+'/**/*.scss' //include our styles
+
+    //ignore styles from node_modules
+    '!' + STYLE_SRC_DIR + '/node_modules/**/*.css',
+    '!' + STYLE_SRC_DIR + '/**/node_modules/**/*.css',
+
+    //ignore styles from node_modules
+    '!' + STYLE_SRC_DIR + '/node_modules/**/*.scss',
+    '!' + STYLE_SRC_DIR + '/**/node_modules/**/*.scss',
+
+    STYLE_SRC_DIR + '/*.css', STYLE_SRC_DIR + '/**/*.css', //include our styles
+    STYLE_SRC_DIR + '/*.scss', STYLE_SRC_DIR + '/**/*.scss' //include our styles
   ];
 
   /**
@@ -82,16 +87,16 @@ module.exports = function(cfg) {
       logger.log('bundling styles...');
       startTime = Date.now();
       return createBundle(bundler).on('finish', function() {
-        var totalTime=Date.now()-startTime;
-        logger.log('bundled stlyes in '+(totalTime/1000)+'s');
+        var totalTime = Date.now() - startTime;
+        logger.log('bundled stlyes in ' + totalTime / 1000 + 's');
       });
     });
 
     logger.log('bundling styles...');
     startTime = Date.now();
     return createBundle(bundler).on('finish', function() {
-      var totalTime=Date.now()-startTime;
-      logger.log('bundled stlyes in '+(totalTime/1000)+'s');
+      var totalTime = Date.now() - startTime;
+      logger.log('bundled stlyes in ' + totalTime / 1000 + 's');
     });
   });
 
@@ -100,7 +105,7 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('styles.optimise', function() {
-    return gulp.src(cfg.distdir+'/**/*.css')
+    return gulp.src(cfg.distdir + '/**/*.css')
       .pipe(minify())
       .pipe(gulp.dest(cfg.distdir))
     ;
