@@ -14,7 +14,7 @@ module.exports = function(config) {
     'gulp-rev-all': '^0.8.21',
     'gulp-rev-napkin': 'git+https://github.com/mbbender/gulp-rev-napkin.git',
     'imagemin-pngquant': '^4.1.0',
-    'mkdirp': '^0.5.0',
+    'mkdirp': '^0.5.1',
     'readdir': '^0.0.13',
     'run-sequence': '^1.1.0'
   });

@@ -24,8 +24,8 @@ module.exports = function(config) {
     'gulp-util': '^3.0.7',
     'karma': '^0.13.9',
     'karma-bamboo-reporter': '^0.1.0',
-    'karma-browserify': '^4.3.0',
-    'karma-coverage': '^0.5.2',
+    'karma-browserify': '^4.2.1',
+    'karma-coverage': '^0.4.2',
     'karma-mocha': '^0.2.0',
     'karma-phantomjs-launcher': '^0.2.1',
     'karma-source-map-support': '^1.1.0',
@@ -98,14 +98,13 @@ module.exports = function(config) {
 
     }
 
+    configWithAssets.buildDependencies = Object.assign({}, configWithAssets.buildDependencies, {
+      'istanbul': "git://github.com/gotwarlost/istanbul.git#source-map",
+    });
+
     //use test file for ES6
     configWithAssets.files.push({
       src: 'assets/index.es6.js', dest: 'src/assets/test/index.js'
-    });
-
-    configWithAssets.buildDependencies = Object.assign({}, configWithAssets.buildDependencies, {
-      'isparta': '^3.5.3',
-      'karma-coverage': 'douglasduteil/karma-coverage#next'
     });
 
   }

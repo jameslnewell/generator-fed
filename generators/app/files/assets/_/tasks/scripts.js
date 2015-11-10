@@ -167,7 +167,6 @@ module.exports = function(cfg) {
    *==================================*/
 
   var istanbul = require('browserify-istanbul');
-  var isparta = require('isparta');
 
   gulp.task('scripts.test', function(done) {
     var reportsDirectory = path.resolve(cfg.distdir) + '/__reports__';
@@ -178,38 +177,29 @@ module.exports = function(cfg) {
         configFile: __dirname+'/../karma.conf.js',
         singleRun: true,
 
-        reporters: ['dots', 'bamboo', 'coverage'/*, 'threshold'*/],
+        reporters: ['dots', 'bamboo', 'coverage'],
         browsers: ['PhantomJS'],
 
         browserify: {
-          debug: true,
-          transform: package.browserify.transform.concat([istanbul({
-            instrumenter: isparta,
-            ignore: ['**/node_modules/**', '**/test/**'] //https://github.com/jakemmarsh/angularjs-gulp-browserify-boilerplate/pull/29/files
-          })])
+          debug:      true,
+          transform:  package.browserify.transform.concat([istanbul()])
         },
 
-        coverageReporter: { //TODO: coverage is incorrect for ES5 generated from ES6 - use isparta
-
+        coverageReporter: {
           dir: reportsDirectory + '/coverage',
           reporters: [
-            {type: 'html'},
-            {type: 'text-summary'}
+            { type: 'html' },
+            { type: 'text-summary' }
           ]
-        },
-
-        thresholdReporter: {
-          statements: 90,
-          branches: 90,
-          functions: 90,
-          lines: 90
         },
 
         bambooReporter: {
           filename: reportsDirectory + '/mocha.json'
         }
 
-      }, done);
+      }, function(exitCode) {
+        done(exitCode ? new Error('Test failed.') : null)
+      });
       server.start();
     });
   });
@@ -222,10 +212,12 @@ module.exports = function(cfg) {
 
       browserify: {
         debug:      true,
-        transform:  package.browserify.transform.concat(['browserify-istanbul'])
+        transform:  package.browserify.transform
       }
 
-    }, done);
+    }, function(exitCode) {
+      done(exitCode ? new Error('Test failed.') : null)
+    });
     server.start();
   });
 

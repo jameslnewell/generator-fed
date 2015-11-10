@@ -94,7 +94,6 @@ module.exports = generators.Base.extend({
     //configure other modules
     config = assets(config);
     config = core(config);
-console.log(config.tasks);
 
     //copy files
     for (var i=0; i<config.files.length; ++i) {
