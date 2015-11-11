@@ -5,7 +5,7 @@ module.exports = function(config) {
     basePath: 'src/assets',
 
     files: [
-      'node_modules/phantomjs-polyfill/bind-polyfill.js', //polyfill .bind() for phantom JS <v2.0
+      '../../node_modules/phantomjs-polyfill/bind-polyfill.js', //polyfill .bind() for phantom JS <v2.0
       '**/test/**/*.js'  //test files
     ],
 

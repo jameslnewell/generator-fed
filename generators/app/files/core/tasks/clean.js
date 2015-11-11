@@ -1,6 +1,6 @@
-var gulp        = require('gulp');
-var del         = require('del');
-var mkdirp      = require('mkdirp');
+var gulp = require('gulp');
+var del = require('del');
+var mkdirp = require('mkdirp');
 
 module.exports = function(cfg) {
 

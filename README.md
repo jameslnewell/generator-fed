@@ -2,10 +2,6 @@
 
 Yeoman generator for Frontend Development with Browserify and SASS Composer.
 
-> **NOTE:** Code coverage and static site generation are not yet implemented in v2.0 -
-    Can't get `isparta` to work with the most recent Babel v6 (Oct 29th).
-
-
 ## Installation
 
     $ npm install -g yo generator-fed
