@@ -7,21 +7,18 @@
 module.exports = function(config) {
   var configWithAssets = Object.assign({}, config);
 
-  configWithAssets.devDependencies = Object.assign({}, config.buildDependencies, {
+  configWithAssets.devDependencies = Object.assign({}, config.devDependencies, {
     'phantomjs-polyfill': '0.0.1'
   });
 
   configWithAssets.buildDependencies = Object.assign({}, config.buildDependencies, {
-    'autoprefixer': '^6.0.2',
     'browserify': '^12.0.1',
     'browserify-incremental': '^3.0.1',
     'browserify-istanbul': '^0.2.1',
     'envify': '^3.4.0',
-    'eslint-config-jameslnewell': 'jameslnewell/eslint-config-jameslnewell',
+    'eslint-config-jameslnewell': '^0.1.0',
     'gulp': '^3.9.0',
-    'gulp-autoprefixer': '^3.0.1',
     'gulp-eslint': '^1.0.0',
-    'gulp-minify-css': '^1.1.1',
     'gulp-uglify': '^1.2.0',
     'gulp-util': '^3.0.7',
     'karma': '^0.13.9',
@@ -36,7 +33,6 @@ module.exports = function(config) {
     'mocha': '^2.2.5',
     'phantomjs': '^1.9.18',
     'run-sequence': '^1.1.0',
-    'sass-composer': '2.0.0-beta9',
     'vinyl-buffer': '^1.0.0',
     'vinyl-source-stream': '^1.1.0',
     'watchify': '^3.6.0'
@@ -47,7 +43,7 @@ module.exports = function(config) {
     test: ['scripts.test'],
     debug: ['scripts.debug'],
     optimise: [['scripts.optimise', 'styles.optimise', 'images.optimise'], 'cachebust'],
-    watch: [['packages.watch', 'scripts.watch', 'styles.watch', 'content.watch']]
+    watch: [['scripts.watch', 'styles.watch', 'content.watch']]
   });
 
   configWithAssets.files = config.files.concat([

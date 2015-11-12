@@ -7,14 +7,14 @@
 module.exports = function(config) {
   var configWithDefaults = Object.assign({}, config || {});
 
-  configWithDefaults.name = config.name || '';
-  configWithDefaults.lang = config.lang || '';
+  configWithDefaults.name = configWithDefaults.name || '';
+  configWithDefaults.lang = configWithDefaults.lang || '';
 
   configWithDefaults.dependencies = configWithDefaults.dependencies || {};
   configWithDefaults.devDependencies = configWithDefaults.devDependencies || {};
   configWithDefaults.buildDependencies = configWithDefaults.buildDependencies || {};
 
-  configWithDefaults.tasks = config.tasks || {};
+  configWithDefaults.tasks = configWithDefaults.tasks || {};
   configWithDefaults.ignores = configWithDefaults.ignores = [];
   configWithDefaults.transforms = configWithDefaults.transforms = [];
 

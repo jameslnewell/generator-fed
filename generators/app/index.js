@@ -4,6 +4,7 @@ var generators = require('yeoman-generator');
 var defaults = require('./lib/defaults');
 var core = require('./lib/core');
 var assets = require('./lib/assets');
+var styles = require('./lib/styles');
 
 module.exports = generators.Base.extend({
 
@@ -86,6 +87,7 @@ module.exports = generators.Base.extend({
 
     //configure other modules
     config = assets(config);
+    config = styles(config);
     config = core(config);
 
     //copy files

@@ -17,7 +17,10 @@ module.exports = function(cfg) {
 
   var STYLE_OPTIONS = {
     entry: STYLE_SRC_FILE,
-    plugins: [composer.plugins.url({dir: STYLE_BUILD_DIR, copy: true})]
+    plugins: [composer.plugins.url({transforms: [composer.plugins.url.transforms.hashed({
+      dir: STYLE_BUILD_DIR,
+      copy: true
+    })]})]
   };
 
   var STYLE_SRC_GLOB = [
