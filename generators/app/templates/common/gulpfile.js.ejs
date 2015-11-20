@@ -1,0 +1,31 @@
+var gulp = require('gulp');
+var path = require('path');
+var readdir = require('readdir');
+var sequence = require('run-sequence');
+
+var cfg = {
+
+  production: process.argv.indexOf('all') !== -1,
+
+  srcdir: './src',
+  distdir: './dist',
+
+  assetsdir: './src/assets',
+  reportsdir: './dist/__reports__'
+
+};
+
+//load gulp tasks
+var taskDir = path.join(__dirname, 'tasks');
+var taskFiles = readdir.readSync(taskDir, ['**.js']);
+taskFiles.forEach(function(taskFile) {
+  require(path.join(taskDir, taskFile))(cfg);
+});
+
+<%- Object.keys(tasks).map(function(name) {
+  var subtasks = tasks[name].map(function(subtask) {
+    return JSON.stringify(subtask);
+  }).join(', ');
+
+  return 'gulp.task(\''+name+'\', function(done) {\n  sequence('+subtasks+(tasks[name].length ? ', ' : '')+'done);\n});';
+}).join('\n\n'); %>

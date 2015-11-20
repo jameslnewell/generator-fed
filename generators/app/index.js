@@ -2,9 +2,7 @@ var path = require('path');
 var generators = require('yeoman-generator');
 
 var defaults = require('./lib/defaults');
-var core = require('./lib/core');
-var assets = require('./lib/assets');
-var styles = require('./lib/styles');
+var common = require('./lib/common');
 
 module.exports = generators.Base.extend({
 
@@ -80,15 +78,10 @@ module.exports = generators.Base.extend({
     }
 
     //get the default config
-    var config = defaults({
+    var config = common(defaults({
       name: this.options.name,
       lang: lang
-    });
-
-    //configure other modules
-    config = assets(config);
-    config = styles(config);
-    config = core(config);
+    }));
 
     //copy files
     for (var i = 0; i < config.files.length; ++i) {
