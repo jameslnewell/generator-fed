@@ -25,7 +25,7 @@ describe('App', () => {
     it('should render the message', () => {
       const element = render(<App/>).element;
       expect($('h1', element)).to.deep.equal(
-        <h1>Hello World</h1>
+        <h1>Hello World!</h1>
       );
     });
 

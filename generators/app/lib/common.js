@@ -33,7 +33,7 @@ module.exports = function(config) {
 
   configWithCommon.tasks = Object.assign({}, configWithCommon.tasks, {
     default: ['build'],
-    all: ['clean', 'build', ['test', 'optimise']]
+    all: ['clean', 'build', 'test', 'optimise']
   });
 
   configWithCommon.files = configWithCommon.files.concat([

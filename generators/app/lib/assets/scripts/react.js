@@ -34,9 +34,17 @@ module.exports = function(config) {
     'babel-core': '^6.1.21',
     'chai': '^3.4.1',
     'jsx-chai': '^1.1.1',
-    'mocha': '^2.3.4',
     'react-testutils-query': '^0.1.1',
     'react-testutils-render': '^0.1.1'
+  });
+
+  configWithScripts.buildDependencies = Object.assign({}, configWithScripts.buildDependencies, {
+    'mocha': '^2.3.4',
+    'isparta': '^4.0.0',
+    'gulp-mocha': '^2.2.0',
+    'gulp-istanbul': '^0.10.2',
+    'mocha-bamboo-reporter': '^1.1.0'
+
   });
 
   return configWithScripts;

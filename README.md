@@ -20,7 +20,7 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - bundled with `browserify`
 - transpiled with `babel`
 - minified with `uglify`
-- tested with `karma-mocha`
+- tested with `karma-mocha` (just plain `mocha` for shallow rendering with React)
 - test coverage with `istanbul`
 - watched with `watchify`
 
@@ -36,6 +36,9 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - images optimised with `imagemin`
 
 ### Static content
+
+> Note: Temporarily missing from v2
+
 (optional)
 
 - templates with `ejs`
