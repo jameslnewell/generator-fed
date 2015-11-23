@@ -28,6 +28,12 @@ module.exports = function(config) {
     {src: './assets/scripts/react/**/.*', dest: '.'}
   ]);
 
+  configWithScripts.templates = configWithScripts.templates.concat([
+    {src: './assets/scripts/react/src/content/index.html.ejs', dest: './src/content/index.html', data: {
+      name: configWithScripts.name
+    }}
+  ]);
+
   // ---- testing ----
 
   configWithScripts.devDependencies = Object.assign({}, configWithScripts.devDependencies, {
