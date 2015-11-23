@@ -11,7 +11,7 @@ module.exports = function(cfg) {
     return gulp.src(cfg.assetsdir + '/test/**/*.js')
       .pipe(mocha({
         reporter: 'mocha-bamboo-reporter',
-        output: cfg.distdir + '/__reports__/mocha.json'
+        output: cfg.reportsdir + '/mocha.json'
       }))
     ;
   });
@@ -29,7 +29,7 @@ module.exports = function(cfg) {
     return gulp.src(cfg.assetsdir + '/test/**/*.js')
       .pipe(mocha())
       .pipe(istanbul.writeReports({
-        dir: cfg.distdir + '/__reports__/coverage',
+        dir: cfg.reportsdir + '/coverage',
         reporters: ['text-summary', 'html']
       }))
     ;
