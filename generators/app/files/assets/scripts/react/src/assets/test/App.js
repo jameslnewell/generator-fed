@@ -2,12 +2,7 @@ import React from 'react';
 import $ from 'react-testutils-query';
 import render from 'react-testutils-render';
 
-import chai, {expect} from 'chai';
-import jsxChai from 'jsx-chai';
-
 import App from '../App';
-
-chai.use(jsxChai);
 
 describe('App', () => {
 

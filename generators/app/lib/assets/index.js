@@ -6,7 +6,8 @@ module.exports = function(config) {
   var configWithAssets = Object.assign({}, config);
 
   configWithAssets.tasks = Object.assign({}, config.tasks, {
-    build: ['scripts.lint', ['scripts.bundle', 'styles.bundle', 'content.build']],
+    lint: ['scripts.lint'],
+    build: ['lint', ['scripts.bundle', 'styles.bundle', 'content.build']],
     test: ['scripts.test'],
     'test.watch': ['scripts.test.watch'],
     optimise: [['scripts.optimise', 'styles.optimise', 'images.optimise'], 'cachebust'],
