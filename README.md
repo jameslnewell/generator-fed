@@ -51,6 +51,7 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - make `karma-threshold-reporter` actually break the build
 - `karma-browserifast` might bundle tests faster?
 - `testem` might be nicer for debugging tests?
+- `react-dom-stream` for faster rendering?
 
 ## License
 
