@@ -7,9 +7,13 @@ module.exports = function(config) {
   });
 
   configWithContent.templates = configWithContent.templates.concat([
-    {src: './assets/content/src/content/index.html.ejs', dest: './src/content/index.html', data: {
-      name: configWithContent.name
-    }}
+    {
+      src: './assets/content/src/content/index.html.ejs',
+      dest: configWithContent.contentDirectory + '/index.html',
+      data: {
+        name: configWithContent.name
+      }
+    }
   ]);
 
   return configWithContent;

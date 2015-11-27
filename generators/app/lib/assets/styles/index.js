@@ -19,7 +19,8 @@ module.exports = function(config) {
   });
 
   configWithStyles.files = configWithStyles.files.concat([
-    {src: './assets/styles/**', dest: '.'}
+    {src: './assets/styles/tasks/**', dest: './tasks'},
+    {src: './assets/styles/styles/**', dest: configWithStyles.stylesDirectory}
   ]);
 
   return configWithStyles;

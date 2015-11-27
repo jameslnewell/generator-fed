@@ -5,13 +5,5 @@
     "commonjs": true,
     "mocha": true
   },
-  "settings": {
-    "import/resolve": {
-      "extensions": [
-        ".js",
-        ".jsx"
-      ]
-    }
-  },
   "extends": "jameslnewell/react"
 }

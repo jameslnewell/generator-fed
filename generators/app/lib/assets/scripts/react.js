@@ -24,14 +24,19 @@ module.exports = function(config) {
   });
 
   configWithScripts.files = configWithScripts.files.concat([
-    {src: './assets/scripts/react/**', dest: '.'},
-    {src: './assets/scripts/react/**/.*', dest: '.'}
+    {src: './assets/scripts/react/**/.*', dest: '.'},
+    {src: './assets/scripts/react/tasks/**', dest: './tasks'},
+    {src: './assets/scripts/react/scripts/**', dest: configWithScripts.scriptsDirectory}
   ]);
 
   configWithScripts.templates = configWithScripts.templates.concat([
-    {src: './assets/scripts/react/src/content/index.html.ejs', dest: './src/content/index.html', data: {
-      name: configWithScripts.name
-    }}
+    {
+      src: './assets/scripts/react/content/index.html.ejs',
+      dest: configWithScripts.contentDirectory + '/index.html',
+      data: {
+        name: configWithScripts.name
+      }
+    }
   ]);
 
   // ---- testing ----

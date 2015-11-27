@@ -18,6 +18,10 @@ module.exports = function(config) {
   configWithDefaults.ignores = configWithDefaults.ignores = [];
   configWithDefaults.transforms = configWithDefaults.transforms = [];
 
+  configWithDefaults.scriptsDirectory = configWithDefaults.scriptsDirectory || './src';
+  configWithDefaults.stylesDirectory = configWithDefaults.stylesDirectory || './src';
+  configWithDefaults.contentDirectory = configWithDefaults.contentDirectory || './src';
+
   configWithDefaults.files = configWithDefaults.files || [];
   configWithDefaults.templates = configWithDefaults.templates || [];
 
