@@ -13,8 +13,8 @@ var package = require('../../package.json');
 
 module.exports = function(cfg) {
 
-  var SCRIPT_SRC_DIR = cfg.assetsdir;
-  var SCRIPT_BUILD_DIR = cfg.distdir;
+  var SCRIPT_SRC_DIR = cfg.scriptsDir;
+  var SCRIPT_BUILD_DIR = cfg.destDir;
 
   var SCRIPT_SRC_FILE = SCRIPT_SRC_DIR + '/index.js';
   var SCRIPT_BUILD_FILE = SCRIPT_BUILD_DIR + '/bundled.js';
@@ -157,9 +157,9 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('scripts.optimise', function() {
-    return gulp.src(cfg.distdir + '/**/*.js')
+    return gulp.src(cfg.destDir + '/**/*.js')
       .pipe(uglify())
-      .pipe(gulp.dest(cfg.distdir))
+      .pipe(gulp.dest(cfg.destDir))
     ;
   });
 

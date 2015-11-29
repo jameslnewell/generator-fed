@@ -1,7 +1,7 @@
 module.exports = function(config) {
   config.set({
 
-    basePath: 'src/assets',
+    basePath: '<%= scriptDir %>',
 
     browserify: {
       debug: true
@@ -16,7 +16,7 @@ module.exports = function(config) {
     files: [
 
       //polyfill .bind() for phantom JS <v2.0
-      '../../node_modules/phantomjs-polyfill/bind-polyfill.js',
+      process.cwd() + '/node_modules/phantomjs-polyfill/bind-polyfill.js',
 
       //test files
       'test/**/*.js'

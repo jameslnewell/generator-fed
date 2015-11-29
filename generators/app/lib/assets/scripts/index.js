@@ -28,7 +28,8 @@ module.exports = function(config) {
 
   configWithScripts.files = configWithScripts.files.concat([
     {src: './assets/scripts/common/tasks/**', dest: './tasks'},
-    {src: './assets/scripts/common/scripts/**', dest: configWithScripts.scriptsDirectory}
+    {src: './assets/scripts/common/scripts/**', dest: configWithScripts.scriptsDirectory},
+    {src: './assets/scripts/common/scripts/**/.*', dest: configWithScripts.scriptsDirectory}
   ]);
 
   switch (configWithScripts.lang) {

@@ -10,8 +10,8 @@ var filepath    = require('metalsmith-filepath');
 
 module.exports = function(cfg) {
 
-  var CONTENT_SRC_DIR = cfg.srcdir+'';
-  var CONTENT_SRC_GLOB = [cfg.srcdir+'/content/**/*', cfg.srcdir+'/layouts/**/*', cfg.srcdir+'/templates/**/*'];
+  var CONTENT_SRC_DIR = cfg.srcDir+'';
+  var CONTENT_SRC_GLOB = [cfg.srcDir+'/content/**/*', cfg.srcDir+'/layouts/**/*', cfg.srcDir+'/templates/**/*'];
 
   /*==================================
    * Build content
@@ -21,7 +21,7 @@ module.exports = function(cfg) {
 
     var
       src   = './content',
-      dest  = path.relative(CONTENT_SRC_DIR, cfg.distdir)
+      dest  = path.relative(CONTENT_SRC_DIR, cfg.destDir)
     ;
 
     metalsmith(CONTENT_SRC_DIR)
@@ -51,14 +51,14 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('content.optimise', function() {
-    return gulp.src(cfg.distdir+'/**/*.html')
+    return gulp.src(cfg.destDir+'/**/*.html')
       .pipe(minHTML({
         collapseWhitespace: true,
         conservativeCollapse: true,
         minifyJS: true,
         minifyCSS: true
       }))
-      .pipe(gulp.dest(cfg.distdir))
+      .pipe(gulp.dest(cfg.destDir))
     ;
   });
 };

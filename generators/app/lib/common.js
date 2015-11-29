@@ -43,13 +43,19 @@ module.exports = function(config) {
   ]);
 
   configWithCommon.templates = configWithCommon.templates.concat([
+
     {src: './common/.gitignore.ejs', dest: '.gitignore', data: {
       ignores: configWithCommon.ignores
     }},
+
     {src: './common/gulpfile.js.ejs', dest: './gulpfile.js', data: {
       name: configWithCommon.name,
-      tasks: configWithCommon.tasks
+      tasks: configWithCommon.tasks,
+      stylesDir: configWithCommon.stylesDirectory,
+      scriptsDir: configWithCommon.scriptsDirectory,
+      contentDir: configWithCommon.contentDirectory
     }},
+
     {src: './common/package.json.ejs', dest: './package.json', data: {
       name: configWithCommon.name,
       dependencies: configWithCommon.dependencies,
@@ -60,9 +66,11 @@ module.exports = function(config) {
       ),
       transforms: configWithCommon.transforms
     }},
+
     {src: './common/README.md.ejs', dest: './README.md', data: {
       name: configWithCommon.name
     }}
+
   ]);
 
   return configWithCommon;

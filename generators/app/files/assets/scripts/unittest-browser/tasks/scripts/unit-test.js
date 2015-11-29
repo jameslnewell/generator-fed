@@ -27,7 +27,7 @@ module.exports = function(cfg) {
     browsers: ['PhantomJS'],
 
     coverageReporter: {
-      dir: path.resolve(__dirname + '/../..', cfg.reportsdir + '/coverage'),
+      dir: path.resolve(__dirname + '/../..', cfg.reportsDir + '/coverage'),
       reporters: [
         {type: 'html'},
         {type: 'text-summary'}
@@ -35,7 +35,7 @@ module.exports = function(cfg) {
     },
 
     bambooReporter: {
-      filename: path.resolve(__dirname + '/../..', cfg.reportsdir + '/mocha.json')
+      filename: path.resolve(__dirname + '/../..', cfg.reportsDir + '/mocha.json')
     }
 
   };
@@ -52,7 +52,7 @@ module.exports = function(cfg) {
   };
 
   gulp.task('scripts.test', function(done) {
-    mkdirp(cfg.reportsdir, function(err) {
+    mkdirp(cfg.reportsDir, function(err) {
       if (err) return done(err);
       new Server(testConfig, function(exitCode) {
         done(exitCode ? new Error('Tests failed.') : null);

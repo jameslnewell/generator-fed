@@ -16,13 +16,13 @@ module.exports = function(cfg) {
       dontUpdateReference: [/\.html$/]
     });
 
-    return gulp.src([cfg.distdir+'/**'])
-      .pipe(gulp.dest(cfg.distdir))
+    return gulp.src([cfg.destDir+'/**'])
+      .pipe(gulp.dest(cfg.destDir))
       .pipe(rev.revision())
-      .pipe(gulp.dest(cfg.distdir))
+      .pipe(gulp.dest(cfg.destDir))
       .pipe(napkin({verbose: false}))
       .pipe(rev.manifestFile())
-      .pipe(gulp.dest(cfg.distdir))
+      .pipe(gulp.dest(cfg.destDir))
     ;
 
   });

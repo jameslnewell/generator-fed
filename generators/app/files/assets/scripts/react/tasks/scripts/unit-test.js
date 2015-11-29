@@ -7,17 +7,17 @@ var isparta = require('isparta');
 module.exports = function(cfg) {
 
   gulp.task('scripts.test.bamboo', function() {
-    process.env.MOCHA_FILE = cfg.distdir + '/__reports__/mocha.json';
-    return gulp.src(cfg.assetsdir + '/test/**/*.js')
+    process.env.MOCHA_FILE = cfg.destDir + '/__reports__/mocha.json';
+    return gulp.src(cfg.scriptsDir + '/test/**/*.js')
       .pipe(mocha({
         reporter: 'mocha-bamboo-reporter',
-        output: cfg.reportsdir + '/mocha.json'
+        output: cfg.reportsDir + '/mocha.json'
       }))
     ;
   });
 
   gulp.task('scripts.test.instrument', function() {
-    return gulp.src(['!' + cfg.assetsdir + '/test/**/*.js', cfg.assetsdir + '/**/*.js'])
+    return gulp.src(['!' + cfg.scriptsDir + '/test/**/*.js', cfg.scriptsDir + '/**/*.js'])
       .pipe(istanbul({
         instrumenter: isparta.Instrumenter
       }))
@@ -26,17 +26,17 @@ module.exports = function(cfg) {
   });
 
   gulp.task('scripts.test', ['scripts.test.instrument'], function() {
-    return gulp.src(cfg.assetsdir + '/test/**/*.js')
+    return gulp.src(cfg.scriptsDir + '/test/**/*.js')
       .pipe(mocha())
       .pipe(istanbul.writeReports({
-        dir: cfg.reportsdir + '/coverage',
+        dir: cfg.reportsDir + '/coverage',
         reporters: ['text-summary', 'html']
       }))
     ;
   });
 
   gulp.task('scripts.test.watch', function() {
-    gulp.watch(cfg.assetsdir + '/**/*.js', ['scripts.test']);
+    gulp.watch(cfg.scriptsDir + '/**/*.js', ['scripts.test']);
   });
 
 };

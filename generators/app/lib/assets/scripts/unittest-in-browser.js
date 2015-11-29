@@ -32,5 +32,13 @@ module.exports = function(config) {
     {src: './assets/scripts/unittest-browser/**', dest: '.'}
   ]);
 
+  configWithScripts.templates = configWithScripts.templates.concat([
+
+    {src: './assets/scripts/unittest-in-browser/karma.conf.js.ejs', dest: 'karma.conf.js', data: {
+      scriptDir: configWithScripts.scriptsDirectory
+    }}
+
+  ]);
+
   return configWithScripts;
 };

@@ -9,8 +9,8 @@ var watcher = require('sass-composer/lib/watcher');
 
 module.exports = function(cfg) {
 
-  var STYLE_SRC_DIR = cfg.assetsdir;
-  var STYLE_BUILD_DIR = cfg.distdir;
+  var STYLE_SRC_DIR = cfg.stylesDir;
+  var STYLE_BUILD_DIR = cfg.destDir;
 
   var STYLE_SRC_FILE = STYLE_SRC_DIR + '/index.scss';
   var STYLE_BUILD_FILE = STYLE_BUILD_DIR + '/bundled.css';
@@ -108,9 +108,9 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('styles.optimise', function() {
-    return gulp.src(cfg.distdir + '/**/*.css')
+    return gulp.src(cfg.destDir + '/**/*.css')
       .pipe(minify())
-      .pipe(gulp.dest(cfg.distdir))
+      .pipe(gulp.dest(cfg.destDir))
     ;
   });
 

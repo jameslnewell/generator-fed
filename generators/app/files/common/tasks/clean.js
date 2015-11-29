@@ -9,9 +9,9 @@ module.exports = function(cfg) {
    *==================================*/
 
   gulp.task('clean', function(cb) {
-    del(['*', '.*'], {cwd: cfg.distdir})
+    del(['*', '.*'], {cwd: cfg.destDir})
       .then(function() {
-        mkdirp(cfg.distdir, cb);
+        mkdirp(cfg.destDir, cb);
       })
     ;
   });

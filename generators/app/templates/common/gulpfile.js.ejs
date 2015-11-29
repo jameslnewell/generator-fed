@@ -7,11 +7,15 @@ var cfg = {
 
   production: process.argv.indexOf('all') !== -1,
 
-  srcdir: './src',
-  distdir: './dist',
+  //source directories
+  srcDir: './src',
+  stylesDir: '<%= stylesDir %>',
+  scriptsDir: '<%= scriptsDir %>',
+  contentDir: '<%= contentDir %>',
 
-  assetsdir: './src/assets',
-  reportsdir: './dist/__reports__'
+  //destination directories
+  destDir: './dist',
+  reportsDir: './dist/__reports__'
 
 };
 
