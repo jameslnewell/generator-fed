@@ -93,7 +93,7 @@ module.exports = function(config) {
       'redux-form': '^2.4.5',
       'redux-simple-router': '^0.0.10',
       'redux-thunk': '^1.0.0',
-      'rev-manifest-path': '^0.1.2'
+      'rev-manifest-path': '^0.1.3'
     });
 
     configWithScripts.devDependencies = Object.assign({}, configWithScripts.devDependencies, {
