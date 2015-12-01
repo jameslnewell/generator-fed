@@ -82,6 +82,8 @@ Yeoman generator for Frontend Development with Browserify and SASS Composer.
 - `testem` might be nicer for debugging tests?
 - `react-dom-stream` for faster rendering?
 - hot reloading
+- update universal app readme
+- ignore console.log in server code
 
 ## License
 
