@@ -56,6 +56,12 @@ module.exports = generators.Base.extend({
       defaults: false
     });
 
+    this.option('universal', {
+      type: Boolean,
+      desc: 'Whether to use a universal app',
+      defaults: false
+    });
+
   },
 
   /**
@@ -68,13 +74,18 @@ module.exports = generators.Base.extend({
     if (
       this.options.es5 && this.options.es6
       || this.options.es5 && this.options.react
+      || this.options.es5 && this.options.universal
       || this.options.es6 && this.options.react
+      || this.options.es6 && this.options.universal
+      || this.options.react && this.options.universal
     ) {
-      this.env.error('Please choose only one of --es5, --es6 and --react.');
+      this.env.error('Please choose only one of --es5, --es6, --react and --universal.');
     } else if (this.options.es6) {
       lang = 'es6';
     } else if (this.options.react) {
       lang = 'react';
+    } else if (this.options.universal) {
+      lang = 'universal';
     }
 
     //get the default config

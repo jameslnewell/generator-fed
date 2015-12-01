@@ -15,7 +15,7 @@ module.exports = function(config) {
     'browserify': '^12.0.1',
     'browserify-incremental': '^3.0.1',
     'envify': '^3.4.0',
-    'eslint-config-jameslnewell': '^0.3.2',
+    'eslint-config-jameslnewell': '^0.3.3',
     'gulp': '^3.9.0',
     'gulp-eslint': '^1.0.0',
     'gulp-uglify': '^1.2.0',
@@ -27,9 +27,7 @@ module.exports = function(config) {
   });
 
   configWithScripts.files = configWithScripts.files.concat([
-    {src: './assets/scripts/common/tasks/**', dest: './tasks'},
-    {src: './assets/scripts/common/scripts/**', dest: configWithScripts.scriptsDirectory},
-    {src: './assets/scripts/common/scripts/**/.*', dest: configWithScripts.scriptsDirectory}
+    {src: './assets/scripts/common/tasks/**', dest: './tasks'}
   ]);
 
   switch (configWithScripts.lang) {
@@ -45,6 +43,7 @@ module.exports = function(config) {
       break;
 
     case 'react':
+    case 'universal':
       configWithScripts = react(configWithScripts);
       break;
 

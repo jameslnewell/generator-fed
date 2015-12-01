@@ -16,4 +16,8 @@ module.exports = function(cfg) {
     ;
   });
 
+  gulp.task('clean.rev-manifest', function() {
+    return del(['rev-manifest.json'], {cwd: cfg.destDir});
+  });
+
 };

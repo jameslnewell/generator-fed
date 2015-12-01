@@ -19,14 +19,14 @@ module.exports = function(config) {
       process.cwd() + '/node_modules/phantomjs-polyfill/bind-polyfill.js',
 
       //test files
-      'test/**/*.js'
+      'test/**/*.{js,jsx}'
 
     ],
 
     frameworks: ['mocha', 'browserify', 'source-map-support'],
 
     preprocessors: {
-      'test/**/*.js': ['browserify']
+      'test/**/*.{js,jsx}': ['browserify']
     },
 
     reporters: ['dots']

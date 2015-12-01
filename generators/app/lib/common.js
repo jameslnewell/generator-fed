@@ -15,7 +15,7 @@ module.exports = function(config) {
     'gulp': '^3.9.0',
     'gulp-imagemin': '^2.2.1',
     'gulp-rev-all': '^0.8.21',
-    'gulp-rev-napkin': 'git+https://github.com/mbbender/gulp-rev-napkin.git',
+    'gulp-rev-delete-original': '^0.1.0',
     'imagemin-pngquant': '^4.1.0',
     'mkdirp': '^0.5.1',
     'readdir': '^0.0.13',
@@ -51,6 +51,7 @@ module.exports = function(config) {
     {src: './common/gulpfile.js.ejs', dest: './gulpfile.js', data: {
       name: configWithCommon.name,
       tasks: configWithCommon.tasks,
+      scriptPath: configWithCommon.scriptPath,
       stylesDir: configWithCommon.stylesDirectory,
       scriptsDir: configWithCommon.scriptsDirectory,
       contentDir: configWithCommon.contentDirectory
@@ -64,7 +65,8 @@ module.exports = function(config) {
         configWithCommon.buildDependencies,
         configWithCommon.devDependencies
       ),
-      transforms: configWithCommon.transforms
+      transforms: configWithCommon.transforms,
+      scripts: configWithCommon.scripts
     }},
 
     {src: './common/README.md.ejs', dest: './README.md', data: {

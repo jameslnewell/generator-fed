@@ -17,7 +17,9 @@ module.exports = function(config) {
   configWithDefaults.tasks = configWithDefaults.tasks || {};
   configWithDefaults.ignores = configWithDefaults.ignores = [];
   configWithDefaults.transforms = configWithDefaults.transforms = [];
+  configWithDefaults.scripts = configWithDefaults.scripts = {};
 
+  configWithDefaults.scriptPath = configWithDefaults.scriptPath || 'index.js';
   configWithDefaults.scriptsDirectory = configWithDefaults.scriptsDirectory || './src/assets';
   configWithDefaults.stylesDirectory = configWithDefaults.stylesDirectory || './src/assets';
   configWithDefaults.contentDirectory = configWithDefaults.contentDirectory || './src/content';

@@ -6,7 +6,7 @@ module.exports = function(cfg) {
   var SCRIPT_SRC_DIR = cfg.scriptsDir;
 
   var SCRIPT_SRC_GLOB = [
-    SCRIPT_SRC_DIR + '/*.js', SCRIPT_SRC_DIR + '/**/*.js' //include our scripts
+    SCRIPT_SRC_DIR + '/*.{js,jsx}', SCRIPT_SRC_DIR + '/**/*.{js,jsx}' //include our scripts
   ];
 
   var SCRIPT_LINT_OPTIONS = null;

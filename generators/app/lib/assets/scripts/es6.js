@@ -18,8 +18,9 @@ module.exports = function(config) {
   });
 
   configWithScripts.files = configWithScripts.files.concat([
-    {src: './assets/scripts/es6/**/.*', dest: '.'},
-    {src: './assets/scripts/es6/scripts/**', dest: configWithScripts.scriptsDirectory}
+    {src: './assets/scripts/es6/.*', dest: '.'},
+    {src: './assets/scripts/es6/scripts/**', dest: configWithScripts.scriptsDirectory},
+    {src: './assets/scripts/es6/scripts/**/.*', dest: configWithScripts.scriptsDirectory}
   ]);
 
   return configWithScripts;

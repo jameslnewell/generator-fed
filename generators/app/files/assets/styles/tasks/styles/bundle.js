@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var logger = require('gulp-util');
 var prefixer = require('gulp-autoprefixer');
-var minify = require('gulp-minify-css');
 var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 var composer = require('sass-composer');
@@ -101,17 +100,6 @@ module.exports = function(cfg) {
       var totalTime = Date.now() - startTime;
       logger.log('bundled stlyes in ' + totalTime / 1000 + 's');
     });
-  });
-
-  /*==================================
-   * Minify styles
-   *==================================*/
-
-  gulp.task('styles.optimise', function() {
-    return gulp.src(cfg.destDir + '/**/*.css')
-      .pipe(minify())
-      .pipe(gulp.dest(cfg.destDir))
-    ;
   });
 
 };

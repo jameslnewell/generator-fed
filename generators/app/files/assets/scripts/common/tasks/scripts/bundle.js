@@ -1,13 +1,13 @@
+var path = require('path');
 var gulp = require('gulp');
+
 var sequence = require('run-sequence');
 var source = require('vinyl-source-stream');
 
 var logger = require('gulp-util');
-var eslint = require('gulp-eslint');
 var browserify = require('browserify');
 var incremental = require('browserify-incremental');
 var watchify = require('watchify');
-var uglify = require('gulp-uglify');
 
 var package = require('../../package.json');
 
@@ -16,11 +16,11 @@ module.exports = function(cfg) {
   var SCRIPT_SRC_DIR = cfg.scriptsDir;
   var SCRIPT_BUILD_DIR = cfg.destDir;
 
-  var SCRIPT_SRC_FILE = SCRIPT_SRC_DIR + '/index.js';
+  var SCRIPT_SRC_FILE = path.join(SCRIPT_SRC_DIR, cfg.scriptPath);
   var SCRIPT_BUILD_FILE = SCRIPT_BUILD_DIR + '/bundled.js';
 
   var SCRIPT_SRC_GLOB = [
-    SCRIPT_SRC_DIR + '/*.js', SCRIPT_SRC_DIR + '/**/*.js' //include our scripts
+    SCRIPT_SRC_DIR + '/*.{js,jsx}', SCRIPT_SRC_DIR + '/**/*.{js,jsx}' //include our scripts
   ];
 
   /**
@@ -31,7 +31,8 @@ module.exports = function(cfg) {
   function createBundler(watch) {
     var config = {
       debug: !cfg.production,
-      entries: SCRIPT_SRC_FILE
+      entries: SCRIPT_SRC_FILE,
+      extensions: ['.js', '.json', '.jsx']
     };
 
     if (watch) {
@@ -93,34 +94,6 @@ module.exports = function(cfg) {
   }
 
   /*==================================
-   * Lint scripts
-   *==================================*/
-
-  var SCRIPT_LINT_OPTIONS = null;
-
-  //in development: allow `console`, `debugger` and other statements for debugging purposes
-  if (!cfg.production) {
-    SCRIPT_LINT_OPTIONS = {
-      configFile: 'jameslnewell/debug'
-    };
-  }
-
-  gulp.task('scripts.lint', function() {
-    return gulp.src(SCRIPT_SRC_GLOB)
-      .pipe(eslint(SCRIPT_LINT_OPTIONS))
-      .pipe(eslint.formatEach('stylish'))
-      .pipe(eslint.failOnError())
-    ;
-  });
-
-  gulp.task('scripts.lintAndIgnoreErrors', function() {
-    return gulp.src(SCRIPT_SRC_GLOB)
-      .pipe(eslint(SCRIPT_LINT_OPTIONS))
-      .pipe(eslint.formatEach('stylish'))
-    ;
-  });
-
-  /*==================================
    * Bundle scripts
    *==================================*/
 
@@ -150,17 +123,6 @@ module.exports = function(cfg) {
       logger.log('bundling scripts...');
       return createBundle(bundler);
     });
-  });
-
-  /*==================================
-   * Optimise scripts
-   *==================================*/
-
-  gulp.task('scripts.optimise', function() {
-    return gulp.src(cfg.destDir + '/**/*.js')
-      .pipe(uglify())
-      .pipe(gulp.dest(cfg.destDir))
-    ;
   });
 
 };

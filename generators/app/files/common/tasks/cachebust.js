@@ -1,6 +1,6 @@
 var gulp        = require('gulp');
 var RevAll      = require('gulp-rev-all');
-var napkin      = require('gulp-rev-napkin');
+var revdel      = require('gulp-rev-delete-original');
 
 module.exports = function(cfg) {
 
@@ -11,7 +11,7 @@ module.exports = function(cfg) {
   gulp.task('cachebust',function() {
 
     var rev = new RevAll({
-      dontGlobal: [/__reports__\/.*/],
+      dontGlobal: [/__reports__\/.*/], //fixme: not ignoring report assets?
       dontRenameFile: [/\.html$/],
       dontUpdateReference: [/\.html$/]
     });
@@ -20,7 +20,7 @@ module.exports = function(cfg) {
       .pipe(gulp.dest(cfg.destDir))
       .pipe(rev.revision())
       .pipe(gulp.dest(cfg.destDir))
-      .pipe(napkin({verbose: false}))
+      .pipe(revdel())
       .pipe(rev.manifestFile())
       .pipe(gulp.dest(cfg.destDir))
     ;

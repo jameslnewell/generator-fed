@@ -15,7 +15,8 @@
     "transform": <%- JSON.stringify(transforms); %>
   },
   "scripts": {
-    "build": "gulp all",
-    "test": "gulp test"
+    <%- Object.keys(scripts).sort().map(function(name) {
+      return '"'+name+'": "'+scripts[name]+'"';
+    }).join(',\n    '); %>
   }
 }
